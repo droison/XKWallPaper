@@ -102,6 +102,7 @@ public class PicGridListAdapter extends BaseAdapter {
 		final Paper paper = list.get(position);
 
 		convertView = mInflater.inflate(R.layout.main_grid_item, null);
+		final RelativeLayout main_grid_root_relativelayout = (RelativeLayout) convertView.findViewById(R.id.main_grid_root_relativelayout);
 
 		viewHolder.img = (ImageView) convertView.findViewById(R.id.grid_item_img);
 		viewHolder.tags = (TextView) convertView.findViewById(R.id.main_grid_item_tags);
@@ -115,6 +116,16 @@ public class PicGridListAdapter extends BaseAdapter {
 		viewHolder.downNum.setText(paper.getDownload() + "");
 		viewHolder.praiseNum.setText(paper.getPraise() + "");
 
+
+		final ImageView iconbtn = new ImageView(mActivity);
+		if (dir.equals("vid")) {
+			RelativeLayout.LayoutParams rllp = new RelativeLayout.LayoutParams(40, 40);
+			rllp.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.grid_item_img);
+			rllp.addRule(RelativeLayout.ALIGN_RIGHT, R.id.grid_item_img);
+			iconbtn.setImageResource(R.drawable.icon_vid);
+			iconbtn.setLayoutParams(rllp);
+		} 
+		
 		final Handler praiseHandler = new Handler() {
 			public void handleMessage(android.os.Message msg) {
 				switch (msg.what) {
@@ -212,6 +223,7 @@ public class PicGridListAdapter extends BaseAdapter {
 						viewHolder.img.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,dp2px.getPicThumbHigh()));
 						viewHolder.img.setImageBitmap(bm);
 					}
+					main_grid_root_relativelayout.addView(iconbtn);
 				}
 			}, dir, paper.getId() + ".thumb");
 		}

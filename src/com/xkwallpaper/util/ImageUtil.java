@@ -126,9 +126,9 @@ public class ImageUtil {
 
 	public static void touchImageCal(String inputPath, ImageViewTouch ivt, float hscreen, float wscreen) {
 		BitmapFactory.Options opts = new BitmapFactory.Options();  
-		opts.inSampleSize = 2; 
-		Bitmap bm = BitmapFactory.decodeFile(inputPath,opts);
-		
+//		opts.inSampleSize = 2; 
+//		Bitmap bm = BitmapFactory.decodeFile(inputPath,opts);
+		Bitmap bm = BitmapFactory.decodeFile(inputPath);
 		if (bm != null) {
 			float w = bm.getWidth();
 			float h = bm.getHeight();
@@ -164,7 +164,7 @@ public class ImageUtil {
 				// ivt.setImageBitmap(bm, m, 1.0f, 1.0f);
 				// }
 			}
-			ivt.setDisplayType(DisplayType.FIT_IF_BIGGER);
+			ivt.setDisplayType(DisplayType.FIT_TO_SCREEN);
 			ivt.zoomTo(beishu,wscreen/2,hscreen/2,500);
 		}
 

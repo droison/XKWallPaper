@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -103,7 +104,15 @@ public class DownPicViewActivity extends BaiduMTJFragmentActivity {
 		down_tab_share.setOnClickListener(bottomTabListener);
 		ivt.setSingleTapListener(OIV);
 		path = AppConstants.APP_FILE_PATH + "/download/" + paper.getId() + ".jpg";
-		setUpImage(path);
+		Handler hander = new Handler();
+		hander.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				setUpImage(path);
+			}
+		}, 500);
+		
 		
 		shareTask = new ShareTask((Activity)this, paper, paper.getDir());
 	}
