@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/abs__background_holo_light" >
+
+    <include
+        android:id="@+id/layout_titlebar"
+        layout="@layout/title_one_button"
+        android:visibility="visible" />
+
+    <RelativeLayout
+        android:id="@+id/videoinfo_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_titlebar"
+        android:visibility="visible" >
+
+        <RelativeLayout
+            android:id="@+id/videoContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+
+            <VideoView
+                android:id="@+id/surface_view"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+        <com.xkwallpaper.ui.component.PicInfoLayout
+            android:id="@+id/picContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </com.xkwallpaper.ui.component.PicInfoLayout>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_paperpay"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/videoinfo_layout" >
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/vid_comment_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_paperpay"
+        android:layout_marginBottom="40dp" >
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/video_bottom_frame"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true" >
+    </FrameLayout>
+
+</RelativeLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- 没有焦点时的背景颜色 -->
+<item android:state_window_focused="false"
+android:drawable="@drawable/color_transparent" />
+<!-- 非触摸模式下获得焦点并单击时的背景颜色 -->
+<item android:state_focused="true" android:state_pressed="true"
+android:drawable="@drawable/color_blue" />
+<!--触摸模式下单击时的背景颜色  -->
+<item android:state_focused="false" android:state_pressed="true"
+android:drawable="@drawable/color_blue" />
+<!--选中时的背景颜色  -->
+<item android:state_selected="true"  android:drawable="@drawable/color_blue" />
+<!--获得焦点时的背景  颜色-->
+<item android:state_focused="true" android:drawable="@drawable/color_blue" />
+</selector>

@@ -1,0 +1,198 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/abs__background_holo_light" >
+
+    <include
+        android:id="@+id/lostpwd_title"
+        layout="@layout/title_one_button" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/lostpwd_title"
+        android:layout_margin="5dp"
+        android:background="@drawable/image_bg"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
+             >
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5.0dip"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="25dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp" >
+
+                <TextView
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/reg_phone"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/login_text" />
+
+                <EditText
+                    android:id="@+id/lostpwd_phone"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2.3"
+                    android:background="@drawable/search_text"
+                    android:gravity="center_vertical"
+                    android:hint="@string/reg_hint_phone"
+                    android:imeOptions="actionSearch"
+                    android:inputType="phone"
+                    android:textColor="#ff222222"
+                    android:textColorHint="#ffaaaaaa"
+                    android:textSize="@dimen/login_hint_text" >
+
+                    <requestFocus />
+                </EditText>
+
+                <TextView
+                    android:id="@+id/lostpwd_check"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.7"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="center"
+                    android:text="@string/reg_check"
+                    android:textColor="@color/black"
+                    android:background="@drawable/ab_item_bg"
+                    android:textSize="@dimen/login_text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5.0dip"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="25dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp" >
+
+                <TextView
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/reg_checknum"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/login_text" />
+
+                <EditText
+                    android:id="@+id/lostpwd_checknum"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="3.0"
+                    android:background="@drawable/search_text"
+                    android:gravity="center_vertical"
+                    android:hint="@string/reg_hint_checknum"
+                    android:imeOptions="actionSearch"
+                    android:textColor="#ff222222"
+                    android:textColorHint="#ffaaaaaa"
+                    android:textSize="@dimen/login_hint_text" >
+
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5.0dip"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="25dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp" >
+
+                <TextView
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/reg_pass"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/login_text" />
+
+                <EditText
+                    android:id="@+id/lostpwd_password"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="3.0"
+                    android:background="@drawable/search_text"
+                    android:gravity="center_vertical"
+                    android:hint="@string/reg_hint_pass"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textPassword"
+                    android:textColor="#ff222222"
+                    android:textColorHint="#ffaaaaaa"
+                    android:textSize="@dimen/login_hint_text" >
+
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5.0dip"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="25dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp" >
+
+                <TextView
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/reg_repass"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/login_text" />
+
+                <EditText
+                    android:id="@+id/lostpwd_repassword"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="3.0"
+                    android:background="@drawable/search_text"
+                    android:gravity="center_vertical"
+                    android:hint="@string/reg_hint_repass"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textPassword"
+                    android:textColor="#ff222222"
+                    android:textColorHint="#ffaaaaaa"
+                    android:textSize="@dimen/login_hint_text" >
+
+                </EditText>
+            </LinearLayout>
+            
+            <TextView
+                android:id="@+id/lostpwd_submit"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_margin="35dp"
+                android:background="@drawable/set_logout_btn"
+                android:gravity="center"
+                android:text="确认"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

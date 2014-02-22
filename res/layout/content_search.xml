@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/abs__background_holo_light"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@drawable/search_text"
+            android:paddingLeft="5dp"
+            android:layout_margin="5.0dip" >
+
+            <FrameLayout
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="5.0dip"
+                android:layout_weight="1.0" >
+
+                <EditText
+                    android:id="@+id/search_key"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@null"
+                    android:hint="@string/search_hint"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:gravity="center_vertical"
+                    android:textColor="#ff222222"
+                    android:textColorHint="#ff999999" >
+
+                    <requestFocus />
+                </EditText>
+
+                <ImageView
+                    android:id="@+id/search_btnClear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center"
+                    android:background="@null"
+                    android:src="@drawable/search_cancel" />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/search_btnSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:paddingRight="10.0dip"
+                android:src="@drawable/search_go" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/search_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

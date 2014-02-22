@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF333333"
+    tools:context=".PictureActivity" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/image_default" />
+
+    <com.xkwallpaper.imagezoom.ImageViewTouch
+        android:id="@+id/image"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter" />
+
+    <!-- 底部导航栏 -->
+
+    <FrameLayout
+        android:id="@+id/pic_preview_bottom_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:baselineAligned="false"
+        android:visibility="gone" >
+    </FrameLayout>
+
+    <SeekBar
+        android:id="@+id/progressBar1"
+        style="@style/MediaController_SeekBar"
+        android:layout_width="fill_parent"
+        android:layout_height="15dip"
+        android:max="100"
+        android:progress="0" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/title_one_back"
+        android:onClick="finishView" />
+
+</RelativeLayout>

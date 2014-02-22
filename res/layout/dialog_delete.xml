@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="150dp"
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical" >
+
+    <!-- 退出游戏的背景图 -->
+
+    <TextView
+        android:id="@+id/delete_dialog_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="你确定要删除它么？"
+        android:textColor="@color/black"
+        android:textSize="13sp" />
+    <!-- 确认按钮 -->
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
+            android:layout_toLeftOf="@+id/dialog_temp_center"
+            android:background="@drawable/dialog_btn_bg"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/dialog_temp_center"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true" />
+        <!-- 取消按钮 -->
+
+        <Button
+            android:id="@+id/btn_cancel"
+           android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/dialog_temp_center"
+            android:background="@drawable/dialog_btn_bg"
+            android:gravity="center"
+            android:text="关闭"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </RelativeLayout>
+
+</LinearLayout>

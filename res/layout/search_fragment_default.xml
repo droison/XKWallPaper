@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:scrollbars="none" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10.0dip" >
+
+            <TextView
+                android:id="@+id/search_text1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10.0dip"
+                android:text="热门标签"
+                android:textColor="@color/tag_title_text"
+                android:textSize="@dimen/lw_text_size_title" />
+
+            <LinearLayout
+                android:id="@+id/search_LinearLayout1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:horizontalSpacing="5.0dip"
+                android:orientation="vertical"
+                android:padding="5.0dip"
+                android:verticalSpacing="5.0dip" >
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/search_text2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10.0dip"
+                android:layout_marginTop="10.0dip"
+                android:textColor="@color/tag_title_text"
+                android:visibility="gone"
+                android:text="最近搜索"
+                android:textSize="@dimen/lw_text_size_title" />
+
+            <LinearLayout
+                android:id="@+id/search_LinearLayout2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:horizontalSpacing="5.0dip"
+                android:orientation="vertical"
+                android:paddingLeft="5.0dip"
+                android:verticalSpacing="5.0dip" >
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

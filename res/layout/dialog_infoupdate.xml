@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/infoupdate_prompt_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="请填写新密码"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+    <!-- 确认按钮 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_weight="5"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/infoupdate_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="2dp"
+            android:gravity="left|top"
+            android:hint="请输入新密码"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
+</LinearLayout>

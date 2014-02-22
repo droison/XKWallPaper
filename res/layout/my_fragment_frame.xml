@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+   <!--  <FrameLayout
+        android:id="@+id/my_tab_frame"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+ -->
+ <include layout="@layout/my_tab_fragment"/>
+    <FrameLayout
+        android:id="@+id/my_content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

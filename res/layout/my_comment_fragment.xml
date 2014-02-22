@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xkwallpaper.ui.component.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/image_bg"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:id="@+id/my_comment_linearlayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp"
+            android:paddingTop="3dp" >
+        </LinearLayout>
+    </ScrollView>
+
+</com.xkwallpaper.ui.component.PullToRefreshView>
