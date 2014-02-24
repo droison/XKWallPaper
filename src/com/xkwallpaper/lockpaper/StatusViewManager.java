@@ -48,16 +48,16 @@ public class StatusViewManager implements MediaControl
    
     private final Handler mHandler = new Handler();
     
-    private static final Typeface sBackgroundFont;
-    private static final Typeface sForegroundFont;
+//    private static final Typeface sBackgroundFont;
+//    private static final Typeface sForegroundFont;
     
     private static Context mContext;
 	
     static 
     {
     	//创建获取字体风格
-        sBackgroundFont = Typeface.createFromFile(SYSTEM_FONT_TIME_BACKGROUND);
-        sForegroundFont = Typeface.createFromFile(SYSTEM_FONT_TIME_FOREGROUND);
+//        sBackgroundFont = Typeface.createFromFile(SYSTEM_FONT_TIME_BACKGROUND);
+//        sForegroundFont = Typeface.createFromFile(SYSTEM_FONT_TIME_FOREGROUND);
     }
     
 	public StatusViewManager(Activity activity, Context context)

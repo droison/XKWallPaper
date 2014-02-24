@@ -18,8 +18,9 @@ public class LockService extends Service {
 	private static boolean isServiceStart = false;
 	private KeyguardManager mKeyguardManager = null;
 	private KeyguardManager.KeyguardLock mKeyguardLock = null;
-	private TelephonyManager phoneManager ;
-private boolean phoneInUse = false;
+	private TelephonyManager phoneManager;
+	private boolean phoneInUse = false;
+
 	@Override
 	public IBinder onBind(Intent arg0) {
 		// TODO Auto-generated method stub
@@ -30,10 +31,10 @@ private boolean phoneInUse = false;
 		if (serviceIntentInstance == null) {
 			serviceIntentInstance = new Intent(mContext, LockService.class);
 			serviceIntentInstance.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			
+
 			lockIntent = new Intent(mContext, LockActivity.class);
 			lockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			
+
 			mContext.startService(serviceIntentInstance);
 		}
 		isServiceStart = true;
@@ -45,7 +46,7 @@ private boolean phoneInUse = false;
 			mContext.stopService(serviceIntentInstance);
 			serviceIntentInstance = null;
 		}
-		
+
 	}
 
 	public static boolean isServiceRunning() {
@@ -56,27 +57,26 @@ private boolean phoneInUse = false;
 		super.onCreate();
 
 		phoneManager = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
-        // 手动注册对PhoneStateListener中的listen_call_state状态进行监听
-		phoneManager.listen(new PhoneStateListener(){
-			 @Override
-		        public void onCallStateChanged(int state, String incomingNumber) {
-		            switch (state) {
-		            case TelephonyManager.CALL_STATE_IDLE:
-		            	phoneInUse = false;
-		                break;
-		            case TelephonyManager.CALL_STATE_RINGING:
-		            	phoneInUse = true;
-		                break;
-		            case TelephonyManager.CALL_STATE_OFFHOOK:
-		            	phoneInUse = false;
-		            default:
-		                break;
-		            }
-		            super.onCallStateChanged(state, incomingNumber);
-		        }
+		// 手动注册对PhoneStateListener中的listen_call_state状态进行监听
+		phoneManager.listen(new PhoneStateListener() {
+			@Override
+			public void onCallStateChanged(int state, String incomingNumber) {
+				switch (state) {
+				case TelephonyManager.CALL_STATE_IDLE:
+					phoneInUse = false;
+					break;
+				case TelephonyManager.CALL_STATE_RINGING:
+					phoneInUse = true;
+					break;
+				case TelephonyManager.CALL_STATE_OFFHOOK:
+					phoneInUse = false;
+				default:
+					break;
+				}
+				super.onCallStateChanged(state, incomingNumber);
+			}
 		}, PhoneStateListener.LISTEN_CALL_STATE);
-        
-		
+
 		IntentFilter mScreenOnFilter = new IntentFilter("android.intent.action.SCREEN_ON");
 		LockService.this.registerReceiver(mScreenOnReceiver, mScreenOnFilter);
 
@@ -94,7 +94,7 @@ private boolean phoneInUse = false;
 		super.onDestroy();
 		LockService.this.unregisterReceiver(mScreenOnReceiver);
 		LockService.this.unregisterReceiver(mScreenOffReceiver);
-		if(isServiceStart){
+		if (isServiceStart) {
 			startService(serviceIntentInstance);
 		}
 	}
@@ -104,7 +104,7 @@ private boolean phoneInUse = false;
 		@Override
 		public void onReceive(Context context, Intent intent) {
 
-			if (intent.getAction().equals("android.intent.action.SCREEN_ON")&&!phoneInUse) {
+			if (intent.getAction().equals("android.intent.action.SCREEN_ON") && !phoneInUse) {
 				mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
 				mKeyguardLock = mKeyguardManager.newKeyguardLock("LockIntent");
 				mKeyguardLock.disableKeyguard();
@@ -119,7 +119,7 @@ private boolean phoneInUse = false;
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 
-			if (action.equals("android.intent.action.SCREEN_OFF")&&!phoneInUse) {
+			if (action.equals("android.intent.action.SCREEN_OFF") && !phoneInUse) {
 				mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
 				mKeyguardLock = mKeyguardManager.newKeyguardLock("LockIntent");
 				mKeyguardLock.disableKeyguard();
