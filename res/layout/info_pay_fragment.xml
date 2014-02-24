@@ -9,7 +9,7 @@
         android:layout_height="fill_parent"
         android:paddingLeft="15.0dip"
         android:text="￥15"
-        android:textColor="@color/red"
+        android:textColor="@color/set_logout"
         android:textSize="22sp"
         android:gravity="center"
         android:paddingRight="5.0dip" />
@@ -20,7 +20,7 @@
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/set_logout_btn"
+        android:background="@drawable/pay_btn"
         android:gravity="center"
         android:layout_margin="10.0dip"
         android:text="立即支付"

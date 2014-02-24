@@ -8,6 +8,7 @@ import com.xkwallpaper.db.DbAccount;
 import com.xkwallpaper.db.PayDAO;
 import com.xkwallpaper.http.PostData;
 import com.xkwallpaper.http.base.OrderCreateBase;
+import com.xkwallpaper.http.base.OrderCreateResult;
 import com.xkwallpaper.http.base.Paper;
 import com.xkwallpaper.ui.LoginActivity;
 import com.xkwallpaper.util.DialogUtil;
@@ -72,14 +73,21 @@ public class OrderCreateLoader {
 			dialogUtil.dismissProgressDialog();
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
-				String json = (String) msg.obj;
-				Toast.makeText(mActivity, json, 1).show();
-//				//如果服务端支付过
-//				onPayCompleteListener.call(true);
-//				payDAO.save(account.getToken(), paper.getId());
-//				//如果未支付过，根据生成的订单创建支付宝快捷支付
-//				String order_id = "";
-//				ThreadExecutor.execute(new AliPayThread(mActivity, alipayHandler, paper, order_id));
+				OrderCreateResult ocr = (OrderCreateResult) msg.obj;
+				if(ocr.isResult()){
+					ocr.setStatus(true);//最后这里需要注释掉
+					//如果服务端支付过
+					if(ocr.isStatus()){
+						onPayCompleteListener.call(true);
+						payDAO.save(account.getToken(), paper.getId());
+					}else{
+						//如果未支付过，根据生成的订单创建支付宝快捷支付
+						String order_id = String.valueOf(ocr.getOrder_id());
+						ThreadExecutor.execute(new AliPayThread(mActivity, alipayHandler, paper, order_id));
+					}
+				}else{
+					Toast.makeText(mActivity, "错误："+ocr.getMessage(), Toast.LENGTH_SHORT).show();
+				}
 				break;
 			case AppConstants.HANDLER_HTTPSTATUS_ERROR:
 				Toast.makeText(mActivity, "网络访问出错", Toast.LENGTH_SHORT).show();

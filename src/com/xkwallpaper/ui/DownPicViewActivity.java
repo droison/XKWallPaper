@@ -72,6 +72,7 @@ public class DownPicViewActivity extends BaiduMTJFragmentActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		ShareSDK.stopSDK(this);
+		ivt.clear();
 	}
 
 	private void initData() {
@@ -193,7 +194,7 @@ public class DownPicViewActivity extends BaiduMTJFragmentActivity {
 	protected void onPause() {
 		super.onPause();
 	}
-
+	
 	private void setUpImage(String path) {
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);

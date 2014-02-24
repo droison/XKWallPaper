@@ -11,6 +11,8 @@ import com.xkwallpaper.http.ShareTask;
 import com.xkwallpaper.http.DownloadTask.DownCompleteCallBack;
 import com.xkwallpaper.http.SetPicOrLockTask;
 import com.xkwallpaper.http.base.Paper;
+import com.xkwallpaper.thread.OrderCreateLoader;
+import com.xkwallpaper.thread.OrderCreateLoader.OnPayCompleteListener;
 import com.xkwallpaper.ui.R;
 
 import android.app.Activity;
@@ -23,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class BottomTabFragment extends BaiduMTJFragment {
 
@@ -36,6 +39,7 @@ public class BottomTabFragment extends BaiduMTJFragment {
 	private SharedPreferences lockpaper;
 	private SharedPreferences.Editor lockpaperEdit;
 	private SetPicOrLockTask setPicOrLockTask;
+	private OrderCreateLoader orderCreateLoader;
 	/*
 	 * 选项卡部分
 	 */
@@ -63,6 +67,7 @@ public class BottomTabFragment extends BaiduMTJFragment {
 			parentActivity = getActivity();
 			collectDAO = new CollectDAO(parentActivity);
 			isCollect = collectDAO.isExist(paper.getId() + "");
+			orderCreateLoader = new OrderCreateLoader();
 		}
 	}
 
@@ -102,26 +107,44 @@ public class BottomTabFragment extends BaiduMTJFragment {
 			case R.id.bottom_tab_download:
 				if (bottom_tab_download.getTag().equals("已下载"))
 					return;
-				// 1、判断下载目录有没有 2、判断临时的预览页面有没有，有就直接copy过来
-				DownloadTask downTask = new DownloadTask(parentActivity, dir, paper, new DownCompleteCallBack() {
+				orderCreateLoader.loadOrder(parentActivity, paper, new OnPayCompleteListener() {
+
 					@Override
-					public void call(boolean isSuccess) {
-						if (!isSuccess)
-							bottom_tab_download.setTag("下载失败");
+					public void call(boolean isComplete) {
+						if (isComplete) {
+							// 1、判断下载目录有没有 2、判断临时的预览页面有没有，有就直接copy过来
+							DownloadTask downTask = new DownloadTask(parentActivity, dir, paper, new DownCompleteCallBack() {
+								@Override
+								public void call(boolean isSuccess) {
+									if (!isSuccess)
+										bottom_tab_download.setTag("下载失败");
+								}
+							});
+							downTask.execute();
+							bottom_tab_download.setTag("已下载");
+
+						}
 					}
 				});
-				downTask.execute();
-				bottom_tab_download.setTag("已下载");
 				break;
 			case R.id.bottom_tab_setpaper:
-				// 1、下载，下载到固定目录"id.pre"，但却不是下载目录 2、下载成功返回drawable
-				// 3、将drawable处理到固定位置
-				if (!dir.equals("vid")) {
-					setPicOrLockTask = new SetPicOrLockTask(parentActivity, lockpaperEdit, paper, dir);
-					setPicOrLockTask.execute();
-				} else {
+				orderCreateLoader.loadOrder(parentActivity, paper, new OnPayCompleteListener() {
 
-				}
+					@Override
+					public void call(boolean isComplete) {
+						if (isComplete) {
+							// 1、下载，下载到固定目录"id.pre"，但却不是下载目录 2、下载成功返回drawable
+							// 3、将drawable处理到固定位置
+							if (!dir.equals("vid")) {
+								setPicOrLockTask = new SetPicOrLockTask(parentActivity, lockpaperEdit, paper, dir);
+								setPicOrLockTask.execute();
+							} else {
+
+							}
+						}
+					}
+				});
+
 				break;
 			case R.id.bottom_tab_collect:
 				if (!isCollect) {
@@ -148,8 +171,6 @@ public class BottomTabFragment extends BaiduMTJFragment {
 		shareIntent.setType("image/jpeg");
 		parentActivity.startActivity(Intent.createChooser(shareIntent, "分享"));
 	}
-	
-	
 
 	@Override
 	public void onDestroy() {

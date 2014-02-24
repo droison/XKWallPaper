@@ -9,6 +9,7 @@ import org.apache.http.HttpStatus;
 import com.xkwallpaper.constants.AppConstants;
 import com.xkwallpaper.http.base.HttpResponseEntity;
 import com.xkwallpaper.thread.ThreadExecutor;
+import com.xkwallpaper.util.ImageUtil;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -40,6 +41,7 @@ public class AsyncImageLoader {
 
 	public Bitmap loadImageFromUrl(Context context, String imageUrl, String dir, String name) {
 		Bitmap bm = null;
+		
 		String oldName = "";
 		String newName = "";
 
@@ -74,14 +76,14 @@ public class AsyncImageLoader {
 					}
 				}
 				fos.close();
-				bm = BitmapFactory.decodeFile(oldfile.toString());
+				bm = ImageUtil.readBitmapAutoSize(oldfile.getAbsolutePath(), 0, 0);
 				oldfile.renameTo(newfile);
 			} catch (IOException e) {
 				Log.e(TAG, e.getMessage(), e);
 				return null;
 			}
 		} else {
-			bm = BitmapFactory.decodeFile(newfile.toString());
+			bm = ImageUtil.readBitmapAutoSize(newfile.getAbsolutePath(), 0, 0);
 		}
 		return bm;
 	}

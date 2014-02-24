@@ -4,6 +4,7 @@ import com.xkwallpaper.constants.AppConstants;
 import com.xkwallpaper.http.base.CommentResult;
 import com.xkwallpaper.http.base.HttpResponseEntity;
 import com.xkwallpaper.http.base.LoginOrRegResult;
+import com.xkwallpaper.http.base.OrderCreateResult;
 import com.xkwallpaper.http.base.PraiseResult;
 import com.xkwallpaper.util.JsonUtil;
 import com.xkwallpaper.util.StringUtil;
@@ -121,7 +122,8 @@ public class PostData implements Runnable {
 					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, pv3));
 					break;
 				case 10:
-					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, json));
+					OrderCreateResult ocr = (OrderCreateResult) JsonUtil.jsonToObject(json, OrderCreateResult.class);
+					mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, ocr));
 					break;
 				default:
 					break;

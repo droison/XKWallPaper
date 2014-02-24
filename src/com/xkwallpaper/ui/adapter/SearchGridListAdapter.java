@@ -15,7 +15,9 @@ import com.xkwallpaper.http.AsyncImageLoader.ImageCallback;
 import com.xkwallpaper.http.base.Paper;
 import com.xkwallpaper.http.base.PostPraiseBase;
 import com.xkwallpaper.http.base.PraiseResult;
+import com.xkwallpaper.thread.OrderCreateLoader;
 import com.xkwallpaper.thread.ThreadExecutor;
+import com.xkwallpaper.thread.OrderCreateLoader.OnPayCompleteListener;
 import com.xkwallpaper.ui.LoginActivity;
 import com.xkwallpaper.ui.MainActivity;
 import com.xkwallpaper.ui.PicInfoActivity;
@@ -44,6 +46,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SearchGridListAdapter extends BaseAdapter {
 
@@ -59,6 +62,7 @@ public class SearchGridListAdapter extends BaseAdapter {
 	private AccountDAO accountDAO;
 	private DbAccount account;
 	private DpSpDip2Px dp2px;
+	private OrderCreateLoader orderCreateLoader;
 
 	public SearchGridListAdapter(List<Paper> list, MainActivity mActivity) {
 		super();
@@ -69,6 +73,7 @@ public class SearchGridListAdapter extends BaseAdapter {
 		downloadDAO = new DownloadDAO(mActivity);
 		accountDAO = new AccountDAO(mActivity);
 		dp2px = new DpSpDip2Px(mActivity);
+		orderCreateLoader = new OrderCreateLoader();
 	}
 
 	@Override
@@ -164,20 +169,29 @@ public class SearchGridListAdapter extends BaseAdapter {
 					if (arg0.getTag().equals("已下载")) {
 						return;
 					}
-					DownloadTask downTask = new DownloadTask(mActivity, dir, paper, new DownCompleteCallBack() {
-
+					orderCreateLoader.loadOrder(mActivity, paper, new OnPayCompleteListener() {
+						
 						@Override
-						public void call(boolean isSuccess) {
-							if (isSuccess) {
-								viewHolder.down.setImageResource(R.drawable.main_downloaded);
-								paper.setDownload(paper.getDownload() + 1);
-								viewHolder.downNum.setText(String.valueOf(paper.getDownload()));
-								viewHolder.down.getTag().equals("已下载");
+						public void call(boolean isComplete) {
+							if(isComplete){
+								DownloadTask downTask = new DownloadTask(mActivity, dir, paper, new DownCompleteCallBack() {
+
+									@Override
+									public void call(boolean isSuccess) {
+										if (isSuccess) {
+											viewHolder.down.setImageResource(R.drawable.main_downloaded);
+											paper.setDownload(paper.getDownload() + 1);
+											viewHolder.downNum.setText(String.valueOf(paper.getDownload()));
+											viewHolder.down.getTag().equals("已下载");
+										}
+									}
+
+								});
+								downTask.execute();
 							}
 						}
-
 					});
-					downTask.execute();
+					
 				}
 			});
 		} else { // 已经下载

@@ -46,16 +46,16 @@ public final class R {
 		public static final int logo_yixin = 0x7f020077;
 		public static final int logo_yixinmoments = 0x7f020078;
 		public static final int logo_youdao = 0x7f020079;
-		public static final int pin = 0x7f02009a;
-		public static final int share_tb_back = 0x7f0200b8;
-		public static final int share_vp_back = 0x7f0200ba;
-		public static final int ssdk_auth_title_back = 0x7f0200bb;
-		public static final int ssdk_back_arr = 0x7f0200bc;
-		public static final int ssdk_oks_ptr_ptr = 0x7f0200bd;
-		public static final int ssdk_title_div = 0x7f0200be;
-		public static final int title_back = 0x7f0200c7;
-		public static final int title_shadow = 0x7f0200d0;
-		public static final int white_point = 0x7f0200db;
+		public static final int pin = 0x7f02009d;
+		public static final int share_tb_back = 0x7f0200bb;
+		public static final int share_vp_back = 0x7f0200bd;
+		public static final int ssdk_auth_title_back = 0x7f0200be;
+		public static final int ssdk_back_arr = 0x7f0200bf;
+		public static final int ssdk_oks_ptr_ptr = 0x7f0200c0;
+		public static final int ssdk_title_div = 0x7f0200c1;
+		public static final int title_back = 0x7f0200ca;
+		public static final int title_shadow = 0x7f0200d3;
+		public static final int white_point = 0x7f0200de;
 	}
 	public static final class string {
 		public static final int app_downloading = 0x7f060038;

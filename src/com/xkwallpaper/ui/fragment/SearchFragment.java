@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +35,7 @@ public class SearchFragment extends BaiduMTJFragment implements OnClickListener 
 	private DialogUtil dialogUtil;
 	private SearchDefaultFragment sdf;
 	private SearchResultFragment srf;
+	private final String TAG = "SearchFragment";
 
 	@Override
 	public void setArguments(Bundle args) {
@@ -96,10 +98,14 @@ public class SearchFragment extends BaiduMTJFragment implements OnClickListener 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if(isSearch){
-			getFragmentManager().beginTransaction().remove(srf).commit();
-		}else{
-			getFragmentManager().beginTransaction().remove(sdf).commit();
+		try {
+			if(isSearch){
+				getFragmentManager().beginTransaction().remove(srf).commit();
+			}else{
+				getFragmentManager().beginTransaction().remove(sdf).commit();
+			}
+		} catch (IllegalStateException e) {
+			Log.e(TAG, "关闭子搜索fragment时出现一场", e);
 		}
 	}
 
