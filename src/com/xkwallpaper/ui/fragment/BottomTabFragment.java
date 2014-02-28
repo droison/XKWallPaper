@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class BottomTabFragment extends BaiduMTJFragment {
 
@@ -54,7 +53,12 @@ public class BottomTabFragment extends BaiduMTJFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+		if (getActivity() != null) {
+			parentActivity = getActivity();
+			collectDAO = new CollectDAO(parentActivity);
+			isCollect = collectDAO.isExist(paper.getId() + "");
+			orderCreateLoader = new OrderCreateLoader();
+		}
 		view = inflater.inflate(R.layout.bottom_tab_fragment, null);
 		setUpView();
 		return view;
@@ -63,12 +67,6 @@ public class BottomTabFragment extends BaiduMTJFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getActivity() != null) {
-			parentActivity = getActivity();
-			collectDAO = new CollectDAO(parentActivity);
-			isCollect = collectDAO.isExist(paper.getId() + "");
-			orderCreateLoader = new OrderCreateLoader();
-		}
 	}
 
 	private void setUpView() {

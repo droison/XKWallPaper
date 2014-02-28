@@ -104,7 +104,7 @@ public class TouchLayout extends RelativeLayout {
 		case MotionEvent.ACTION_DOWN:
 			Log.d("testing", "_______________DDDDDDaaaaDDDDDDDDD________________-");
 			down = y;
-			if (down < (mHight - (mHight/5)))
+			if (down < (mHight - (mHight / 5)))
 				return false;
 			break;
 		case MotionEvent.ACTION_MOVE:
@@ -128,14 +128,17 @@ public class TouchLayout extends RelativeLayout {
 
 					@Override
 					public void onAnimationEnd(Animation animation) {
-						if (up > 0 && up < y/4) {
-							ObjectAnimator yBouncer = ObjectAnimator.ofFloat(TouchLayout.this, "y", -up, 0).setDuration(1500);
-							yBouncer.setInterpolator(new BounceInterpolator());
-							Animator bounceAnim = new AnimatorSet();
-							((AnimatorSet) bounceAnim).play(yBouncer);
-							bounceAnim.start();
+						if (up > 0 && up < y / 4) {
+							try {
+								ObjectAnimator yBouncer = ObjectAnimator.ofFloat(TouchLayout.this, "y", -up, 0).setDuration(1500);
+								yBouncer.setInterpolator(new BounceInterpolator());
+								AnimatorSet bounceAnim = new AnimatorSet();
+								bounceAnim.play(yBouncer);
+								bounceAnim.start();
+							} catch (Exception e) {
+								Log.e("TouchLayout", "锁屏为打开的完成动画", e);
+							}
 						}
-						Log.d("testing", "_____________onAnimationEnd________________-");
 					}
 				});
 				startAnimation(animation);
@@ -143,8 +146,9 @@ public class TouchLayout extends RelativeLayout {
 			break;
 		case MotionEvent.ACTION_UP:
 			up = down - y;
-			if (up > y/4) {
-				android.view.animation.Animation animation = new android.view.animation.TranslateAnimation(0, 0, -move, -y);
+			if (up > y / 4) {
+				float y2 = 2 * ev.getY();
+				android.view.animation.Animation animation = new android.view.animation.TranslateAnimation(0, 0, -move, -y2);
 				animation.setDuration(800);
 				animation.setFillAfter(true);
 				animation.setAnimationListener(new AnimationListener() {
@@ -183,7 +187,7 @@ public class TouchLayout extends RelativeLayout {
 	private void initViews(final Context context) {
 		if (dp2px == null)
 			dp2px = new DpSpDip2Px(context);
-		if(accountDAO==null)
+		if (accountDAO == null)
 			accountDAO = new AccountDAO(context);
 		praiseDAO = new PraiseDAO(context);
 		appearAnimation = AnimationUtils.loadAnimation(context, R.anim.appear);
@@ -202,7 +206,7 @@ public class TouchLayout extends RelativeLayout {
 
 			@Override
 			public void onClick(View v) {
-				ShareTask shareTask = new ShareTask((Activity)getContext(), paper, "lock");
+				ShareTask shareTask = new ShareTask((Activity) getContext(), paper, "lock");
 				shareTask.execute();
 			}
 		});
@@ -216,17 +220,16 @@ public class TouchLayout extends RelativeLayout {
 			public void onClick(View v) {
 				if (v.getTag().equals("已赞")) {
 					return;
-				} 
-				account = accountDAO.getAccount();
-				if(account == null){
-					Toast.makeText(getContext(), "请先进入应用登录", Toast.LENGTH_SHORT).show();
 				}
-				else {
+				account = accountDAO.getAccount();
+				if (account == null) {
+					Toast.makeText(getContext(), "请先进入应用登录", Toast.LENGTH_SHORT).show();
+				} else {
 					mPraiseView.setTag("已赞");
 					PostPraiseBase praiseBase = new PostPraiseBase();
 					praiseBase.setPaper_id(paper.getId());
 					praiseBase.setPrivate_token(account.getToken());
-					ThreadExecutor.execute(new PostData(context, praiseHandler, praiseBase,1));
+					ThreadExecutor.execute(new PostData(context, praiseHandler, praiseBase, 1));
 				}
 
 			}
@@ -235,7 +238,7 @@ public class TouchLayout extends RelativeLayout {
 
 		bottomLayout = getBottomLayout(getContext());
 		bottomLayout.setVisibility(View.VISIBLE);
-		
+
 		addView(bottomLayout);
 		setViewsLayout(mShareView);
 		setViewsLayout(mPraiseView);
