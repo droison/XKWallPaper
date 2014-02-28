@@ -31,7 +31,7 @@ public class AppConstants {
 	 * URL
 	 */
 	public interface HTTPURL{
-		public static final String serverIP = "http://42.121.104.18";
+		public static final String serverIP = "http://115.28.229.188";
 		
 		public static final String picPPT = serverIP+ "/app/papers/ppt"; //GET 首页PPT的三个壁纸
 		public static final String picAll = serverIP + "/app/papers?page="; //GET 传入页码，从1开始
