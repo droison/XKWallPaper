@@ -33,7 +33,6 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 	private DownloadDAO downloadDAO;
 	private DownCompleteCallBack downCompleteCallBack;
 	private final String TAG = "DownTask";
-	
 
 	public interface DownCompleteCallBack {
 		public void call(boolean isSuccess);
@@ -73,10 +72,11 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 				DownloadResult dr = (DownloadResult) JsonUtil.jsonToObject(json, DownloadResult.class);
 				if (dr.isResult()) {
 					if (dir.equals("vid")) {
-						if (paper.getVideo() != null && paper.getVideo().length() != 0) {
+						if (dr.getVideo() != null && dr.getVideo().length() != 0) {
 							isGetUrlSuccess = true;
-							imageUrl = paper.getVideo();
+							imageUrl = dr.getVideo();
 							newName = paper.getId() + ".mp4";
+							paper.setVideo(dr.getVideo());
 							oldName = newName + ".temp";
 						}
 					} else {
@@ -98,6 +98,11 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 		if (!isGetUrlSuccess)
 			return null;
 
+		if (dir.equals("vid")) {
+			SaveVideo sv = new SaveVideo();
+			return sv.saveVideoToLocal(paper);
+		}
+
 		File oldfile = new File(AppConstants.APP_FILE_PATH + "/download", oldName);
 		File newfile = new File(AppConstants.APP_FILE_PATH + "/download", newName);
 		File preViewFile = new File(AppConstants.APP_FILE_PATH + "/" + dir, paper.getId() + ".pre");
@@ -118,7 +123,6 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 				}
 			} else {
 				try {
-
 					FileOutputStream fos = new FileOutputStream(oldfile);
 					hre = null;
 					hre = HTTP.get(imageUrl);
@@ -143,7 +147,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 					Log.e(TAG, "http", e);
 				}
 			}
-		}else{
+		} else {
 			isSuccess = true;
 		}
 		if (isSuccess)

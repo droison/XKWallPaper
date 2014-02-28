@@ -3,6 +3,8 @@ package com.xkwallpaper.http;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -64,7 +66,7 @@ public class HTTP {
 		DefaultHttpClient hc = new DefaultHttpClient(conMgr, params);
 		hc.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 8000);
 
-		hc.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 8000);
+		hc.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 80000);
 		return hc;
 	};
 
@@ -147,7 +149,7 @@ public class HTTP {
 			conn.setRequestProperty("Content-Type", MULTIPART_FROM_DATA + ";boundary=" + BOUNDARY);
 			// 首先组拼文本类型的参数
 			StringBuilder sb = new StringBuilder();
-			
+
 			sb.append(PREFIX);
 			sb.append(BOUNDARY);
 			sb.append(LINEND);
@@ -158,31 +160,30 @@ public class HTTP {
 			sb.append(token);
 			sb.append(LINEND);
 
-			
 			outStream = new DataOutputStream(conn.getOutputStream());
 			outStream.write(sb.toString().getBytes());
 			// 发送文件数据
 
-			StringBuilder sb1 = new StringBuilder();  
-            sb1.append(PREFIX);  
-            sb1.append(BOUNDARY);  
-            sb1.append(LINEND);  
-            sb1.append("Content-Disposition: form-data; name=\"face\"; filename=\"head.jpg\"" + LINEND);  
-            sb1.append("Content-Type: multipart/form-data; charset=" + CHARSET + LINEND);  
-            sb1.append(LINEND);  
-            outStream.write(sb1.toString().getBytes());
-            
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();  
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);  
-			InputStream is = new ByteArrayInputStream(baos.toByteArray()); 
-            byte[] buffer = new byte[1024];  
-            int len = 0;  
-            while ((len = is.read(buffer)) != -1) {  
-                outStream.write(buffer, 0, len);  
-            }  
-            is.close();  
-            outStream.write(LINEND.getBytes());  
-			
+			StringBuilder sb1 = new StringBuilder();
+			sb1.append(PREFIX);
+			sb1.append(BOUNDARY);
+			sb1.append(LINEND);
+			sb1.append("Content-Disposition: form-data; name=\"face\"; filename=\"head.jpg\"" + LINEND);
+			sb1.append("Content-Type: multipart/form-data; charset=" + CHARSET + LINEND);
+			sb1.append(LINEND);
+			outStream.write(sb1.toString().getBytes());
+
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+			InputStream is = new ByteArrayInputStream(baos.toByteArray());
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = is.read(buffer)) != -1) {
+				outStream.write(buffer, 0, len);
+			}
+			is.close();
+			outStream.write(LINEND.getBytes());
+
 			// 请求结束标志
 			byte[] end_data = (PREFIX + BOUNDARY + PREFIX + LINEND).getBytes();
 			outStream.write(end_data);
@@ -249,7 +250,6 @@ public class HTTP {
 			outputStream.write(requestStringBytes);
 			outputStream.close();
 
-			
 			hre.setHttpResponseCode(httpConn.getResponseCode());
 			input = httpConn.getInputStream();
 			hre.setB(readInputStream(input));
@@ -314,7 +314,7 @@ public class HTTP {
 	}
 
 	public static HttpResponseEntity post(String URL, List<NameValuePair> pairList) {
-		
+
 		String url = URL;
 		HttpResponse response = null;
 		HttpResponseEntity hre = new HttpResponseEntity();
@@ -383,6 +383,34 @@ public class HTTP {
 					Log.e(TAG, "CONNECTIONCLOSE", e);
 				}
 			}
+		}
+
+	}
+
+	public static boolean download(String URL, File oldfile) throws IOException {
+		String url = URL;
+		Log.i("HTTP_URL", url);
+
+		HttpGet listGet = new HttpGet(url);
+		HttpResponse response;
+		InputStream input = null;
+
+		response = httpClient.execute(listGet, localContext);
+		int code = response.getStatusLine().getStatusCode();
+
+		if (code == 200) {
+			input = response.getEntity().getContent();
+			FileOutputStream fos = new FileOutputStream(oldfile);
+			byte buf[] = new byte[1024];
+			int numread = 0;
+			while ((numread = input.read(buf)) != -1) {
+				fos.write(buf, 0, numread);
+			}
+			fos.close();
+
+			return true;
+		} else {
+			return false;
 		}
 
 	}

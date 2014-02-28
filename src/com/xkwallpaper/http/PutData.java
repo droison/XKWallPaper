@@ -1,7 +1,5 @@
 package com.xkwallpaper.http;
 
-import java.io.ByteArrayOutputStream;
-
 import com.xkwallpaper.constants.AppConstants;
 import com.xkwallpaper.http.base.HttpResponseEntity;
 import com.xkwallpaper.http.base.InfoUpdateBase;
@@ -54,12 +52,6 @@ public class PutData implements Runnable {
 		this.private_token = token;
 		this.bm = bm;
 		isFace = true;
-	}
-
-	private byte[] bitmap2Bytes(Bitmap bm) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
-		return baos.toByteArray();
 	}
 
 	public void run() {

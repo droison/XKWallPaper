@@ -15,7 +15,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
-import android.graphics.Typeface;
 import android.os.Handler;
 import android.provider.Settings;
 import android.text.format.DateFormat;
@@ -27,10 +26,6 @@ import android.widget.TextView;
 public class StatusViewManager implements MediaControl
 {
 
-    private static final String SYSTEM = "/system/fonts/";
-    private static final String SYSTEM_FONT_TIME_BACKGROUND = SYSTEM + "AndroidClock.ttf";
-    private static final String SYSTEM_FONT_TIME_FOREGROUND = SYSTEM + "AndroidClock_Highlight.ttf";
-    
     private final static String M12 = "h:mm";
     private final static String M24 = "kk:mm";
     
@@ -48,18 +43,8 @@ public class StatusViewManager implements MediaControl
    
     private final Handler mHandler = new Handler();
     
-//    private static final Typeface sBackgroundFont;
-//    private static final Typeface sForegroundFont;
-    
     private static Context mContext;
 	
-    static 
-    {
-    	//创建获取字体风格
-//        sBackgroundFont = Typeface.createFromFile(SYSTEM_FONT_TIME_BACKGROUND);
-//        sForegroundFont = Typeface.createFromFile(SYSTEM_FONT_TIME_FOREGROUND);
-    }
-    
 	public StatusViewManager(Activity activity, Context context)
 	{
 		mContext = context;
@@ -86,13 +71,8 @@ public class StatusViewManager implements MediaControl
         private TextView mAmPmTextView;
         private String mAmString, mPmString;
 
-        AmPm(Typeface tf) {
+        AmPm() {
             mAmPmTextView = (TextView)findViewById(R.id.am_pm);
-            if (mAmPmTextView != null && tf != null) {
-            	//设置显示的上午、下午字体风格
-                mAmPmTextView.setTypeface(tf);
-            }
-
             //获取显示上午、下午的字符串数组
             String[] ampm = new DateFormatSymbols().getAmPmStrings();
             mAmString = ampm[0];
@@ -238,12 +218,11 @@ public class StatusViewManager implements MediaControl
 		//定义日期的显示格式，日期显示格式在donotTranslatr.xml文件中定义
     	mDateFormat =  "yyyy/MM/dd EEE";
     	mTimeView = (TextView) findViewById(R.id.time);
-//    	mTimeView.setTypeface(sForegroundFont);
     	
     	/*创建AmPm对象，参数为设置的字体风格(如可设为Typeface.DEFAULT_BOLD粗体)，
     	 * 此处参数为空，默认情况。
     	 */
-        mAmPm = new AmPm(null);
+        mAmPm = new AmPm();
         //获取mCalendar对象
         mCalendar = Calendar.getInstance();
         

@@ -75,7 +75,6 @@ public class OrderCreateLoader {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
 				OrderCreateResult ocr = (OrderCreateResult) msg.obj;
 				if(ocr.isResult()){
-					ocr.setStatus(true);//最后这里需要注释掉
 					//如果服务端支付过
 					if(ocr.isStatus()){
 						onPayCompleteListener.call(true);
@@ -105,10 +104,16 @@ public class OrderCreateLoader {
 			switch (msg.what) {
 			case AppConstants.RQF_PAY:
 				//此处再次判断result 如果成功
-				onPayCompleteListener.call(true);
-				payDAO.save(account.getToken(), paper.getId());
+				if(result.isSuccess()){
+					onPayCompleteListener.call(true);
+					payDAO.save(account.getToken(), paper.getId());
+				}
 				//失败
-				onPayCompleteListener.call(false);
+				else{
+					onPayCompleteListener.call(false);
+					Toast.makeText(mActivity, result.getResult(), Toast.LENGTH_SHORT).show();
+				}
+				
 				break;
 			case AppConstants.RQF_LOGIN:
 				break;

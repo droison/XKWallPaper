@@ -33,6 +33,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -171,6 +172,8 @@ public class VideoInfoActivity extends BaiduMTJFragmentActivity {
 												toVideoPlay.putExtras(bundle);
 												VideoInfoActivity.this.startActivity(toVideoPlay);
 
+											}else{
+												Toast.makeText(VideoInfoActivity.this, "失败，请稍后重试", Toast.LENGTH_SHORT).show();
 											}
 
 										}

@@ -109,13 +109,14 @@ public class MainActivity extends SlidingFragmentActivity {
 			menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 			menu.setTouchmodeMarginThreshold(50);
 			// show home as up so we can toggle
-		} else {
-			// add a dummy view
-			View v = new View(this);
-			setBehindContentView(v);
-			menu.setSlidingEnabled(false);
-			menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-		}
+		} 
+//		else {
+//			// add a dummy view
+//			View v = new View(this);
+//			setBehindContentView(v);
+//			menu.setSlidingEnabled(false);
+//			menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+//		}
 
 		menu.setOnOpenListener(new OnOpenListener() {
 

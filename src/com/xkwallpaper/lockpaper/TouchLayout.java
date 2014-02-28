@@ -1,7 +1,5 @@
 package com.xkwallpaper.lockpaper;
 
-import cn.sharesdk.framework.ShareSDK;
-
 import com.xkwallpaper.constants.AppConstants;
 import com.xkwallpaper.db.AccountDAO;
 import com.xkwallpaper.db.DbAccount;
@@ -12,8 +10,6 @@ import com.xkwallpaper.http.base.Paper;
 import com.xkwallpaper.http.base.PostPraiseBase;
 import com.xkwallpaper.http.base.PraiseResult;
 import com.xkwallpaper.thread.ThreadExecutor;
-import com.xkwallpaper.ui.LoginActivity;
-import com.xkwallpaper.ui.PicInfoActivity;
 import com.xkwallpaper.ui.R;
 import com.xkwallpaper.util.DpSpDip2Px;
 
@@ -23,8 +19,6 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -52,7 +46,6 @@ public class TouchLayout extends RelativeLayout {
 	private int mWidth, mHight;
 	private int mShareViewWidth;
 	private ImageView mShareView, mPraiseView;
-	private Rect shareRect;
 	private DpSpDip2Px dp2px;
 	private TextView praisePlus;
 	private PraiseDAO praiseDAO;
@@ -146,13 +139,12 @@ public class TouchLayout extends RelativeLayout {
 					}
 				});
 				startAnimation(animation);
-				Log.d("testing", "_______________MMMMMMMMMMMMMMMMMMMM________________-");
 			}
 			break;
 		case MotionEvent.ACTION_UP:
 			up = down - y;
 			if (up > y/4) {
-				android.view.animation.Animation animation = new android.view.animation.TranslateAnimation(0, 0, -move, -1000);
+				android.view.animation.Animation animation = new android.view.animation.TranslateAnimation(0, 0, -move, -y);
 				animation.setDuration(800);
 				animation.setFillAfter(true);
 				animation.setAnimationListener(new AnimationListener() {

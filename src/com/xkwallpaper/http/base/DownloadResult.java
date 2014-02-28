@@ -7,6 +7,15 @@ public class DownloadResult {
 	private String photo_2;
 	private String photo_3;
 	private String photo_4;
+	private String video;
+
+	public String getVideo() {
+		return video;
+	}
+
+	public void setVideo(String video) {
+		this.video = video;
+	}
 
 	public boolean isResult() {
 		return result;

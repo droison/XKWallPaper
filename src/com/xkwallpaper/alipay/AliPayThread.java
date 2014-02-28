@@ -2,8 +2,6 @@
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import android.app.Activity;
 import android.os.Handler;
@@ -43,9 +41,6 @@ public class AliPayThread implements Runnable {
 
 		AliPay alipay = new AliPay(mActivity, mHandler);
 
-		// 设置为沙箱模式，不设置默认为线上环境
-		// alipay.setSandBox(true);
-
 		String result = alipay.pay(orderInfo);
 
 		Log.i(TAG, "result = " + result);
@@ -70,11 +65,11 @@ public class AliPayThread implements Runnable {
 		sb.append("\"&notify_url=\"");
 
 		// 网址需要做URL编码
-		sb.append(URLEncoder.encode("http://notify.java.jpxx.org/index.jsp"));
+		sb.append(URLEncoder.encode(AppConstants.HTTPURL.orderAsynUrl));
 		sb.append("\"&service=\"mobile.securitypay.pay");
 		sb.append("\"&_input_charset=\"UTF-8");
 		sb.append("\"&return_url=\"");
-		sb.append(URLEncoder.encode("http://m.alipay.com"));
+		sb.append(URLEncoder.encode(AppConstants.HTTPURL.orderAsynUrl));
 		sb.append("\"&payment_type=\"1");
 		sb.append("\"&seller_id=\"");
 		sb.append(Keys.DEFAULT_SELLER);
