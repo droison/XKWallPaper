@@ -35,6 +35,7 @@ public class UpdateHandler extends Handler {
 	private Activity context;
 
 	private String appname;
+	private AlertDialog dialog;
 
 	public UpdateHandler(Activity context) {
 		this.context = context;
@@ -89,13 +90,14 @@ public class UpdateHandler extends Handler {
 					context.finish();
 				}
 			});
-			AlertDialog dialog = builer.create();
+			dialog = builer.create();
 			dialog.show();
 			break;
 		case AppConstants.HANDLER_APK_DOWNLOAD_PROGRESS:
 			mProgress.setProgress((Integer) mes.obj);
 			break;
 		case AppConstants.HANDLER_APK_DOWNLOAD_FINISH:
+			dialog.dismiss();
 			File file = new File(AppConstants.APP_FILE_PATH, appname);
 			installApk(file);
 			break;

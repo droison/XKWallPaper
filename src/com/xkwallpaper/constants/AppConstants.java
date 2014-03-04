@@ -35,7 +35,7 @@ public class AppConstants {
 	 * URL
 	 */
 	public interface HTTPURL{
-		public static final String checkVersion = "";
+		public static final String checkVersion = "http://code.taobao.org/svn/versioncontrol/trunk/xkversion";
 		
 		public static final String serverIP = "http://115.28.229.188";
 		

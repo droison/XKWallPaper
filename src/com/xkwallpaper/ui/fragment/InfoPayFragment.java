@@ -58,6 +58,9 @@ public class InfoPayFragment extends BaiduMTJFragment {
 		paper_pay = (TextView) root.findViewById(R.id.paper_pay);
 		paper_price = (TextView) root.findViewById(R.id.paper_price);
 
+		if(paper.getPrice() == null&&paper.getPrice().equals("")){
+			paper.setPrice("0");
+		}
 		paper_price.setText("￥" + paper.getPrice());
 		paper_pay.setOnClickListener(new OnClickListener() {
 

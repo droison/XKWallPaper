@@ -48,11 +48,11 @@ public class PreviewTask extends AsyncTask<String, Integer, String> {
 		this.bar = bar;
 		this.previewCallBack = previewCallBack;
 		dp2px = new DpSpDip2Px(mActivity);
-		if(dir.equals("lock")){
+		if (dir.equals("lock")) {
 			paperUrl = AppConstants.HTTPURL.lockInfo + paper.getId();
-		}else if(dir.equals("pic")){
+		} else if (dir.equals("pic")) {
 			paperUrl = AppConstants.HTTPURL.picInfo + paper.getId();
-		}else{
+		} else {
 			paperUrl = AppConstants.HTTPURL.vidInfo + paper.getId();
 		}
 	}
@@ -68,7 +68,10 @@ public class PreviewTask extends AsyncTask<String, Integer, String> {
 	protected String doInBackground(String... params) {
 
 		HttpResponseEntity hre = HTTP.get(paperUrl);
-		if(hre.getHttpResponseCode()==HttpStatus.SC_OK){
+		if (hre == null)
+			return null;
+
+		if (hre.getHttpResponseCode() == HttpStatus.SC_OK) {
 			String json;
 			try {
 				json = StringUtil.byte2String(hre.getB());
@@ -77,12 +80,12 @@ public class PreviewTask extends AsyncTask<String, Integer, String> {
 				e.printStackTrace();
 				return null;
 			}
-		}else{
+		} else {
 			return null;
 		}
-		
+
 		String imageUrl = dp2px.getSuitPhoto(paper);
-		
+
 		String oldName = "";
 		String newName = "";
 
