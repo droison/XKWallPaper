@@ -26,6 +26,8 @@ import com.xkwallpaper.ui.fragment.MenuFragment2;
 import com.xkwallpaper.ui.fragment.PicFragment;
 import com.xkwallpaper.ui.fragment.SearchFragment;
 import com.xkwallpaper.ui.fragment.TitleBarFragment;
+import com.xkwallpaper.updateapp.CheckVersionService;
+import com.xkwallpaper.updateapp.UpdateHandler;
 
 public class MainActivity extends SlidingFragmentActivity {
 	private TitleBarFragment mTitleBar;
@@ -38,7 +40,7 @@ public class MainActivity extends SlidingFragmentActivity {
 	private boolean isMainTab = true;
 	private boolean isMenuOpen = false;
 	private boolean isSearch = false;
-	
+
 	public boolean isMainTab() {
 		return isMainTab;
 	}
@@ -66,7 +68,7 @@ public class MainActivity extends SlidingFragmentActivity {
 		start_bg = (ImageView) this.findViewById(R.id.start_bg);
 		Handler startHandler = new Handler();
 		startHandler.postDelayed(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				start_bg.setBackgroundDrawable(null);
@@ -82,12 +84,15 @@ public class MainActivity extends SlidingFragmentActivity {
 		getSupportFragmentManager().beginTransaction().replace(R.id.titlebar_frame, mTitleBar).commit();
 		getSupportFragmentManager().beginTransaction().replace(R.id.tab_frame, maintabFragment).commit();
 		initSlidingMenu(savedInstanceState);
-		
+
 		SharedPreferences lockpaper = getSharedPreferences("lockpaper", 0);
-		if(lockpaper.getBoolean("is_create", false)){
+		if (lockpaper.getBoolean("is_create", false)) {
 			LockService.startLockService(this);
 		}
 		
+		UpdateHandler uhandler = new UpdateHandler(this);
+		new Thread(new CheckVersionService(this, uhandler)).start();
+
 		ShareSDK.initSDK(this);
 	}
 
@@ -109,14 +114,14 @@ public class MainActivity extends SlidingFragmentActivity {
 			menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 			menu.setTouchmodeMarginThreshold(50);
 			// show home as up so we can toggle
-		} 
-//		else {
-//			// add a dummy view
-//			View v = new View(this);
-//			setBehindContentView(v);
-//			menu.setSlidingEnabled(false);
-//			menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-//		}
+		}
+		// else {
+		// // add a dummy view
+		// View v = new View(this);
+		// setBehindContentView(v);
+		// menu.setSlidingEnabled(false);
+		// menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+		// }
 
 		menu.setOnOpenListener(new OnOpenListener() {
 
@@ -134,24 +139,19 @@ public class MainActivity extends SlidingFragmentActivity {
 			@Override
 			public void onClose() {
 				isMenuOpen = false;
-				if (isMainTab){
+				if (isMainTab) {
 					tab_frame.setVisibility(View.VISIBLE);
 					maintabFragment.switchTab(fragmentNum);
-				}else{
+				} else {
 					tab_frame.setVisibility(View.GONE);
 				}
 			}
 		});
-		// 初始化fragment
-		if (savedInstanceState != null)
-			mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
-		else
-			{mContent = new PicFragment();
-			Bundle bundle = new Bundle();
-			bundle.putString("dir", "pic");
-			mContent.setArguments(bundle);
-			}
-			
+		
+		mContent = new PicFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString("dir", "pic");
+		mContent.setArguments(bundle);
 
 		getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mContent).commit();
 
@@ -172,7 +172,7 @@ public class MainActivity extends SlidingFragmentActivity {
 		}
 
 		mTitleBar.setTitleText(fragmentTitle);
-		
+
 		Handler h = new Handler();
 		h.postDelayed(new Runnable() {
 			public void run() {
@@ -180,13 +180,13 @@ public class MainActivity extends SlidingFragmentActivity {
 			}
 		}, 50);
 	}
-	
-	public void switchSearchContent(SearchFragment searchFragment){
+
+	public void switchSearchContent(SearchFragment searchFragment) {
 		if (searchFragment != null) {
 			mContent = searchFragment;
 			fm.beginTransaction().replace(R.id.content_frame, searchFragment).commit();
 		}
-		isSearch = searchFragment.getArguments().getBoolean("isSearch",false);
+		isSearch = searchFragment.getArguments().getBoolean("isSearch", false);
 		tab_frame.setVisibility(View.GONE);
 		mTitleBar.setTitleText(1);
 		Handler h = new Handler();
@@ -204,7 +204,7 @@ public class MainActivity extends SlidingFragmentActivity {
 
 		} else if (!isVisable && isMainTab) {
 			isMainTab = isVisable;
-			
+
 		}
 	}
 
@@ -226,40 +226,37 @@ public class MainActivity extends SlidingFragmentActivity {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-//		getSupportFragmentManager().putFragment(outState, "mContent", mContent);
+		// getSupportFragmentManager().putFragment(outState, "mContent",
+		// mContent);
 	}
-	
+
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {	
-		//监听返回键
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-        	
-        	if(isSearch){
-        		SearchFragment sf = new SearchFragment();
-        		sf.setArguments(new Bundle());
-        		switchSearchContent(sf);
-        	}else{
-        		AlertDialog qdialog = new AlertDialog.Builder(MainActivity.this)
-	    		.setIcon(android.R.drawable.ic_dialog_info)
-	    		.setTitle("确认退出？")
-	    		.setPositiveButton("确定", new DialogInterface.OnClickListener(){
-	    			@Override
-	    			public void onClick(DialogInterface arg0, int arg1) {
-	    				fm.beginTransaction().remove(mContent).commit();
-	    				finish();
-	    			}
-	        	})
-	        	.setNegativeButton("取消", new DialogInterface.OnClickListener(){
-	    			@Override
-	    			public void onClick(DialogInterface arg0, int arg1) {}
-	        	})
-	    	    .create();
-	            qdialog.show();
-        	}
-         }
-        return true;
-     }
-	
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// 监听返回键
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+			if (isSearch) {
+				SearchFragment sf = new SearchFragment();
+				sf.setArguments(new Bundle());
+				switchSearchContent(sf);
+			} else {
+				AlertDialog qdialog = new AlertDialog.Builder(MainActivity.this).setIcon(android.R.drawable.ic_dialog_info).setTitle("确认退出？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						fm.beginTransaction().remove(mContent).commit();
+						finish();
+					}
+				}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+					}
+				}).create();
+				qdialog.show();
+			}
+		}
+		return true;
+	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

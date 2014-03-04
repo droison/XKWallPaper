@@ -20,6 +20,10 @@ public class AppConstants {
 	public static final int HANDLER_MESSAGE_IMAGE500 = 0X200005;   //针对图片上传的500错误
 	public static final int Comment_Activity_Code = 1;
 	
+	public static final int HANDLER_APK_DOWNLOAD_FINISH = 0X30001;
+	public static final int HANDLER_APK_DOWNLOAD_PROGRESS = 0X30002;
+	public static final int HANDLER_APK_STOP = 0X30003;
+	public static final int HANDLER_VERSION_UPDATE = 0X30004;
 	
 	//alipay相关
 	
@@ -31,6 +35,8 @@ public class AppConstants {
 	 * URL
 	 */
 	public interface HTTPURL{
+		public static final String checkVersion = "";
+		
 		public static final String serverIP = "http://115.28.229.188";
 		
 		public static final String picPPT = serverIP+ "/app/papers/ppt"; //GET 首页PPT的三个壁纸

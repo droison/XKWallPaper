@@ -37,6 +37,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -68,6 +69,7 @@ public class SetFragment extends BaiduMTJFragment implements OnClickListener {
 	private final int PHOTO_REQUEST_TAKEPHOTO = 14;
 	private final int PHOTO_REQUEST_GALLERY = 15;
 	private File tempFile = new File(AppConstants.TEMP_HEAD_FILE_PATH);
+	private final String TAG = "SetFragment";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -278,32 +280,36 @@ public class SetFragment extends BaiduMTJFragment implements OnClickListener {
 		} else {
 			bind_weibo.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					bindBase.setType(1);
-					Platform weibo = ShareSDK.getPlatform(parentActivity, SinaWeibo.NAME);
-					weibo.SSOSetting(true);
-					dialogUtil.showDownloadDialog(parentActivity, "正在绑定");
-					if (weibo.isValid()) {
-						weibo.removeAccount();
-					} else {
-						weibo.setPlatformActionListener(new PlatformActionListener() {
+					try {
+						bindBase.setType(1);
+						Platform weibo = ShareSDK.getPlatform(parentActivity, SinaWeibo.NAME);
+						weibo.SSOSetting(true);
+						dialogUtil.showDownloadDialog(parentActivity, "正在绑定");
+						if (weibo.isValid()) {
+							weibo.removeAccount();
+						} else {
+							weibo.setPlatformActionListener(new PlatformActionListener() {
 
-							public void onError(Platform platform, int action, Throwable t) {
-								dialogUtil.dismissDownloadDialog();
-							}
+								public void onError(Platform platform, int action, Throwable t) {
+									dialogUtil.dismissDownloadDialog();
+								}
 
-							public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
-								bindBase.setUid(platform.getDb().get("weibo"));
-								ThreadExecutor.execute(new PostData(parentActivity, bindHandler, bindBase, 6));
-							}
+								public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
+									bindBase.setUid(platform.getDb().get("weibo"));
+									ThreadExecutor.execute(new PostData(parentActivity, bindHandler, bindBase, 6));
+								}
 
-							public void onCancel(Platform platform, int action) {
-								dialogUtil.dismissDownloadDialog();
-							}
+								public void onCancel(Platform platform, int action) {
+									dialogUtil.dismissDownloadDialog();
+								}
 
-						});
-						weibo.showUser(null);
+							});
+							weibo.showUser(null);
+						}
+					} catch (Exception e) {
+						dialogUtil.showSetPicToast(parentActivity, "绑定异常，请重试");
+						Log.e(TAG, "绑定微博异常", e);
 					}
-
 				}
 			});
 		}
@@ -314,32 +320,36 @@ public class SetFragment extends BaiduMTJFragment implements OnClickListener {
 		} else {
 			bind_qq.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					bindBase.setType(2);
-					Platform qq = ShareSDK.getPlatform(parentActivity, QZone.NAME);
-					qq.SSOSetting(true);
-					dialogUtil.showDownloadDialog(parentActivity, "正在绑定");
-					if (qq.isValid()) {
-						qq.removeAccount();
-					} else {
-						qq.setPlatformActionListener(new PlatformActionListener() {
+					try {
+						bindBase.setType(2);
+						Platform qq = ShareSDK.getPlatform(parentActivity, QZone.NAME);
+						qq.SSOSetting(true);
+						dialogUtil.showDownloadDialog(parentActivity, "正在绑定");
+						if (qq.isValid()) {
+							qq.removeAccount();
+						} else {
+							qq.setPlatformActionListener(new PlatformActionListener() {
 
-							public void onError(Platform platform, int action, Throwable t) {
-								dialogUtil.dismissDownloadDialog();
-							}
+								public void onError(Platform platform, int action, Throwable t) {
+									dialogUtil.dismissDownloadDialog();
+								}
 
-							public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
-								bindBase.setUid(platform.getDb().get("weibo"));
-								ThreadExecutor.execute(new PostData(parentActivity, bindHandler, bindBase, 6));
-							}
+								public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
+									bindBase.setUid(platform.getDb().get("weibo"));
+									ThreadExecutor.execute(new PostData(parentActivity, bindHandler, bindBase, 6));
+								}
 
-							public void onCancel(Platform platform, int action) {
-								dialogUtil.dismissDownloadDialog();
-							}
+								public void onCancel(Platform platform, int action) {
+									dialogUtil.dismissDownloadDialog();
+								}
 
-						});
-						qq.showUser(null);
+							});
+							qq.showUser(null);
+						}
+					} catch (Exception e) {
+						dialogUtil.showSetPicToast(parentActivity, "绑定异常，请重试");
+						Log.e(TAG, "绑定QQ异常", e);
 					}
-
 				}
 			});
 		}

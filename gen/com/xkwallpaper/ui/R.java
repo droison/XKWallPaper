@@ -649,6 +649,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int titlebar_frame=0x7f0800ac;
         public static final int toast_layout_root=0x7f08009d;
         public static final int toast_text=0x7f0800d2;
+        public static final int update_progress=0x7f0800d3;
         public static final int v_dot0=0x7f08009f;
         public static final int v_dot1=0x7f0800a0;
         public static final int v_dot2=0x7f0800a1;
@@ -711,7 +712,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_fragment=0x7f03002d;
         public static final int title_one_button=0x7f03002e;
         public static final int toast_set_pic=0x7f03002f;
-        public static final int video_play=0x7f030030;
+        public static final int update_progress=0x7f030030;
+        public static final int video_play=0x7f030031;
     }
     public static final class string {
         public static final int about_company=0x7f060053;
