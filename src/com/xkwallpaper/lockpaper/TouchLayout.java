@@ -13,7 +13,6 @@ import com.xkwallpaper.thread.ThreadExecutor;
 import com.xkwallpaper.ui.R;
 import com.xkwallpaper.util.DpSpDip2Px;
 
-import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -321,12 +320,12 @@ public class TouchLayout extends RelativeLayout {
 		bottomLayout.addView(bottomImage);
 
 		TextView bottomText = new TextView(mContext);
-		LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+		LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dp2px.dip2px(35));
 		lllp.setMargins(dp2px.dip2px(5), 0, 0, 0);
 		bottomText.setLayoutParams(lllp);
 		bottomText.setGravity(Gravity.CENTER);
 		bottomText.setText("向上滑动解锁");
-		bottomText.setTextSize(dp2px.sp2px(13));
+		bottomText.setTextSize(15);
 		bottomLayout.addView(bottomText);
 
 		return bottomLayout;

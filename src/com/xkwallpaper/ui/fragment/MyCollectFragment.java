@@ -18,9 +18,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -127,8 +125,11 @@ public class MyCollectFragment extends BaiduMTJFragment {
 
 						@Override
 						public void imageLoaded(Bitmap bm, String imageUrl) {
-							if (bm != null)
+							if (bm != null){
+								img.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,dp2px.getPicThumbHigh()));
 								img.setImageBitmap(bm);
+							}
+								
 						}
 					}, paper.getDir(), paper.getId() + ".thumb");
 				}

@@ -181,7 +181,7 @@ public class SearchDefaultFragment extends BaiduMTJFragment implements OnClickLi
 				currWidth += getTagWidth(tags.get(i).getTitle());
 				if (currWidth <= maxWidth) {
 					TextView textView = new TextView(parentActivity);
-					LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 48);
+					LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 					lp1.setMargins(10, 5, 10, 25);
 					textView.setText(tags.get(i).getTitle());
 					textView.setTextAppearance(parentActivity, R.style.tag_textview);
@@ -216,7 +216,7 @@ public class SearchDefaultFragment extends BaiduMTJFragment implements OnClickLi
 				currWidth += getTagWidth(searchs.get(i).getKey());
 				if (currWidth <= maxWidth) {
 					TextView textView = new TextView(parentActivity);
-					LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 48);
+					LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 					lp1.setMargins(10, 5, 10, 25);
 					textView.setText(searchs.get(i).getKey());
 					textView.setTextAppearance(parentActivity, R.style.tag_textview);

@@ -132,7 +132,10 @@ public class MyDownloadFragment extends BaiduMTJFragment {
 
 					@Override
 					public void imageLoaded(Bitmap bm, String imageUrl) {
-						img.setImageBitmap(bm);
+						if (bm != null){
+							img.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,dp2px.getPicThumbHigh()));
+							img.setImageBitmap(bm);
+						}
 					}
 				}, paper.getDir(), paper.getId() + ".thumb");
 
