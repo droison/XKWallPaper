@@ -1,6 +1,7 @@
 package com.xkwallpaper.baidumtj;
 
 import com.baidu.mobstat.StatService;
+import com.xkwallpaper.util.ExitApplication;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ public class BaiduMTJActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ExitApplication.getInstance().addActivity(this);
 	}
 
 	@Override

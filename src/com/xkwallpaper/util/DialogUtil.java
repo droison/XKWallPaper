@@ -38,7 +38,7 @@ public class DialogUtil {
 			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
 				switch (keyCode) {
 				case KeyEvent.KEYCODE_BACK:
-
+					progressDialog.dismiss();
 					return true;
 				}
 				return false;
@@ -66,7 +66,7 @@ public class DialogUtil {
 
 		downloadDialog = new Dialog(mActivity, R.style.download_dialog);// 创建自定义样式dialog
 
-		downloadDialog.setCancelable(false);// 不可以用“返回键”取消
+		downloadDialog.setCancelable(true);// 不可以用“返回键”取消
 		downloadDialog.setContentView(v);// 设置布局
 		downloadDialog.show();
 	}

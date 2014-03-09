@@ -23,6 +23,9 @@ public class Result {
 	}
 	
 	public boolean isSuccess(){
+		if(mResult == null){
+			return false;
+		}
 		String src = mResult.replace("{", "");
 		src = src.replace("}", "");
 		if(getContent(src, "resultStatus=", ";memo").equals("9000")){
@@ -48,6 +51,8 @@ public class Result {
 	}
 
 	public String getResult() {
+		if(result == null)
+			return "错误";
 		String src = mResult.replace("{", "");
 		src = src.replace("}", "");
 		return getContent(src, "resultStatus=", ";result");

@@ -53,7 +53,7 @@ import android.widget.Toast;
 public class SetFragment extends BaiduMTJFragment implements OnClickListener {
 
 	private View root;
-	private RelativeLayout set_closelock, set_headlayout, set_nicklayout, set_phonelayout, set_pwdlayout, set_snslayout;
+	private RelativeLayout set_closelock,set_startlock, set_headlayout, set_nicklayout, set_phonelayout, set_pwdlayout, set_snslayout;
 	private MainActivity parentActivity;
 	private SharedPreferences lockpaper;
 	private SharedPreferences.Editor editor;
@@ -87,11 +87,17 @@ public class SetFragment extends BaiduMTJFragment implements OnClickListener {
 	private void setUpView() {
 		parentActivity = (MainActivity) getActivity();
 		set_closelock = (RelativeLayout) root.findViewById(R.id.set_closelock);
+		set_startlock = (RelativeLayout) root.findViewById(R.id.set_startlock);
 
 		lockpaper = parentActivity.getSharedPreferences("lockpaper", 0);
 		editor = lockpaper.edit();
 		if (!lockpaper.getBoolean("is_create", false)) {
 			set_closelock.setVisibility(View.GONE);
+			String paperPath = lockpaper.getString("paper_path", "");
+			int paper_Id = lockpaper.getInt("paper_id", -1);
+			if(!"".equals(paperPath)&&paper_Id!=-1){
+				set_startlock.setVisibility(View.VISIBLE);
+			}
 		}
 
 		set_headlayout = (RelativeLayout) root.findViewById(R.id.set_headlayout);
@@ -159,6 +165,7 @@ public class SetFragment extends BaiduMTJFragment implements OnClickListener {
 
 	private void setUpListener() {
 		set_closelock.setOnClickListener(this);
+		set_startlock.setOnClickListener(this);
 		set_headlayout.setOnClickListener(this);
 		set_nicklayout.setOnClickListener(this);
 		set_phonelayout.setOnClickListener(this);
@@ -176,6 +183,14 @@ public class SetFragment extends BaiduMTJFragment implements OnClickListener {
 			LockService.stopLockService(parentActivity);
 			editor.commit();
 			set_closelock.setVisibility(View.GONE);
+			set_startlock.setVisibility(View.VISIBLE);
+			break;
+		case R.id.set_startlock:
+			editor.putBoolean("is_create", true);
+			LockService.startLockService(parentActivity);
+			editor.commit();
+			set_closelock.setVisibility(View.VISIBLE);
+			set_startlock.setVisibility(View.GONE);
 			break;
 		case R.id.set_headlayout:
 			showImgDialog();

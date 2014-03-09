@@ -1,5 +1,7 @@
 package com.xkwallpaper.ui;
 
+import cn.sharesdk.framework.ShareSDK;
+
 import com.xkwallpaper.baidumtj.BaiduMTJFragmentActivity;
 import com.xkwallpaper.constants.AppConstants;
 import com.xkwallpaper.db.AccountDAO;
@@ -59,7 +61,7 @@ public class PicInfoActivity extends BaiduMTJFragmentActivity {
 		initData();
 		setUpView();
 		setPicLayoutView();
-
+		ShareSDK.initSDK(this);
 	}
 
 	// 设置本activity唯一个应该处理的view
@@ -203,4 +205,8 @@ public class PicInfoActivity extends BaiduMTJFragmentActivity {
 		};
 	};
 
+	protected void onDestroy() {
+		super.onDestroy();
+		ShareSDK.stopSDK(this);
+	};
 }

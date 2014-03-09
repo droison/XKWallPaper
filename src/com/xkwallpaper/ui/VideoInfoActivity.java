@@ -2,6 +2,8 @@ package com.xkwallpaper.ui;
 
 import java.io.File;
 
+import cn.sharesdk.framework.ShareSDK;
+
 import com.xkwallpaper.baidumtj.BaiduMTJFragmentActivity;
 import com.xkwallpaper.constants.AppConstants;
 import com.xkwallpaper.db.AccountDAO;
@@ -71,6 +73,7 @@ public class VideoInfoActivity extends BaiduMTJFragmentActivity {
 		setContentView(R.layout.activity_videoinfo);
 		initData();
 		setUpView();
+		ShareSDK.initSDK(this);
 	}
 
 	@Override
@@ -261,5 +264,10 @@ public class VideoInfoActivity extends BaiduMTJFragmentActivity {
 				break;
 			}
 		};
+	};
+	
+	protected void onDestroy() {
+		super.onDestroy();
+		ShareSDK.stopSDK(this);
 	};
 }

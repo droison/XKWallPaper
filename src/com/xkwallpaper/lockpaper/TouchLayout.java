@@ -134,7 +134,7 @@ public class TouchLayout extends RelativeLayout {
 								AnimatorSet bounceAnim = new AnimatorSet();
 								bounceAnim.play(yBouncer);
 								bounceAnim.start();
-							} catch (Exception e) {
+							} catch (NoClassDefFoundError e) {
 								Log.e("TouchLayout", "锁屏为打开的完成动画", e);
 							}
 						}

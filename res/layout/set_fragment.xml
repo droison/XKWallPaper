@@ -23,6 +23,24 @@
             android:textSize="15sp" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/set_startlock"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        android:background="@drawable/image_bg"
+        android:padding="8dp" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="启用锁屏"
+            android:textColor="@color/red"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/set_loginlayout"
         android:layout_width="match_parent"

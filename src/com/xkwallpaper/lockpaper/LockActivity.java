@@ -31,7 +31,6 @@ public class LockActivity extends BaiduMTJActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//		getWindow().addFlags(FLAG_HOMEKEY_DISPATCHED);
 		setContentView(R.layout.activity_lockpaper);
 
 		mStatusViewManager = new StatusViewManager(this, this.getApplicationContext());

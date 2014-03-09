@@ -1,5 +1,11 @@
 package com.xkwallpaper.lockpaper;
 
+import java.util.List;
+
+import com.xkwallpaper.util.ExitApplication;
+
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -108,7 +114,11 @@ public class LockService extends Service {
 				mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
 				mKeyguardLock = mKeyguardManager.newKeyguardLock("LockIntent");
 				mKeyguardLock.disableKeyguard();
-				startActivity(lockIntent);
+				if(lockIntent == null){
+					lockIntent = new Intent(context, LockActivity.class);
+					lockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(lockIntent);
+				}
 			}
 		}
 
@@ -123,9 +133,28 @@ public class LockService extends Service {
 				mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
 				mKeyguardLock = mKeyguardManager.newKeyguardLock("LockIntent");
 				mKeyguardLock.disableKeyguard();
+				if(lockIntent == null){
+					lockIntent = new Intent(context, LockActivity.class);
+					lockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				}
+				if(!isTopActivity()){
+					ExitApplication.getInstance().exit();
+				}
 				startActivity(lockIntent);
 			}
 		}
 
 	};
+	
+	private boolean isTopActivity(){  
+		ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+        List<RunningTaskInfo>  tasksInfo = am.getRunningTasks(1);  
+        if(tasksInfo.size() > 0){  
+            //应用程序位于堆栈的顶层  
+            if("com.xkwallpaper.ui".equals(tasksInfo.get(0).topActivity.getPackageName())){  
+                return true;  
+            }  
+        }  
+        return false;  
+    }  
 }

@@ -99,9 +99,9 @@ public class SearchFragment extends BaiduMTJFragment implements OnClickListener 
 	public void onDestroy() {
 		super.onDestroy();
 		try {
-			if(isSearch){
+			if (isSearch) {
 				getFragmentManager().beginTransaction().remove(srf).commit();
-			}else{
+			} else {
 				getFragmentManager().beginTransaction().remove(sdf).commit();
 			}
 		} catch (IllegalStateException e) {
@@ -117,8 +117,7 @@ public class SearchFragment extends BaiduMTJFragment implements OnClickListener 
 			break;
 		case R.id.search_btnSearch:
 			String keyword = search_key.getText().toString().trim();
-			((InputMethodManager) parentActivity.getSystemService(parentActivity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(parentActivity.getCurrentFocus().getWindowToken(),
-					InputMethodManager.HIDE_NOT_ALWAYS);
+			((InputMethodManager) parentActivity.getSystemService(parentActivity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(parentActivity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 			if (TextUtils.isEmpty(keyword)) {
 				search_key.setText("");
 				dialogUtil.showSetPicToast(parentActivity, "关键词不能为空");
@@ -137,4 +136,5 @@ public class SearchFragment extends BaiduMTJFragment implements OnClickListener 
 			break;
 		}
 	}
+
 }

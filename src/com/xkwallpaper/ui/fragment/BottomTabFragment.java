@@ -2,8 +2,6 @@ package com.xkwallpaper.ui.fragment;
 
 import java.io.File;
 
-import cn.sharesdk.framework.ShareSDK;
-
 import com.xkwallpaper.baidumtj.BaiduMTJFragment;
 import com.xkwallpaper.db.CollectDAO;
 import com.xkwallpaper.http.DownloadTask;
@@ -25,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 public class BottomTabFragment extends BaiduMTJFragment {
 
@@ -39,6 +38,8 @@ public class BottomTabFragment extends BaiduMTJFragment {
 	private SharedPreferences.Editor lockpaperEdit;
 	private SetPicOrLockTask setPicOrLockTask;
 	private OrderCreateLoader orderCreateLoader;
+	private DownloadTask downTask;
+	
 	/*
 	 * 选项卡部分
 	 */
@@ -92,8 +93,12 @@ public class BottomTabFragment extends BaiduMTJFragment {
 
 		lockpaper = parentActivity.getSharedPreferences("lockpaper", 0);
 		lockpaperEdit = lockpaper.edit();
-
-		ShareSDK.initSDK(parentActivity);
+		
+		if(dir.equals("vid"))
+		{
+			RelativeLayout bottom_setlayout = (RelativeLayout) view.findViewById(R.id.bottom_setlayout);
+			bottom_setlayout.setVisibility(View.GONE);
+		}
 	}
 
 	private class CheckListener implements OnClickListener {
@@ -111,7 +116,7 @@ public class BottomTabFragment extends BaiduMTJFragment {
 					public void call(boolean isComplete) {
 						if (isComplete) {
 							// 1、判断下载目录有没有 2、判断临时的预览页面有没有，有就直接copy过来
-							DownloadTask downTask = new DownloadTask(parentActivity, dir, paper, new DownCompleteCallBack() {
+						    downTask = new DownloadTask(parentActivity, dir, paper, new DownCompleteCallBack() {
 								@Override
 								public void call(boolean isSuccess) {
 									if (!isSuccess)
@@ -176,6 +181,7 @@ public class BottomTabFragment extends BaiduMTJFragment {
 		if (setPicOrLockTask != null) {
 			setPicOrLockTask.cancel(true);
 		}
-		ShareSDK.stopSDK(parentActivity);
+		if(downTask != null)
+			downTask.cancel(true);
 	}
 }

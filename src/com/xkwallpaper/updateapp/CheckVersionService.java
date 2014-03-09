@@ -24,6 +24,11 @@ public class CheckVersionService implements Runnable {
     public void run() {
 
     		HttpResponseEntity hre = HTTP.get(AppConstants.HTTPURL.checkVersion);
+    		if(hre == null){
+    			mHandler.sendEmptyMessage(AppConstants.HANDLER_HTTPSTATUS_ERROR);
+    			return;
+    		}
+    		
     		switch (hre.getHttpResponseCode()) {
     		case 200:
     			try {

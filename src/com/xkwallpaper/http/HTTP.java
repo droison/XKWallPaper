@@ -353,7 +353,6 @@ public class HTTP {
 
 	public static HttpResponseEntity get(String URL) {
 		String url = URL;
-		Log.i("HTTP_URL", url);
 
 		HttpGet listGet = new HttpGet(url);
 		HttpResponse response;

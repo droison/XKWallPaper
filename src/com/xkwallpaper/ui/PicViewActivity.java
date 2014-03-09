@@ -1,5 +1,7 @@
 package com.xkwallpaper.ui;
 
+import cn.sharesdk.framework.ShareSDK;
+
 import com.xkwallpaper.baidumtj.BaiduMTJFragmentActivity;
 import com.xkwallpaper.http.PreviewTask;
 import com.xkwallpaper.http.PreviewTask.PreviewCallBack;
@@ -55,6 +57,7 @@ public class PicViewActivity extends BaiduMTJFragmentActivity {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_picpreview);
 		initData();
+		ShareSDK.initSDK(this);
 	}
 
 	private void initData() {
@@ -165,6 +168,7 @@ public class PicViewActivity extends BaiduMTJFragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		ShareSDK.stopSDK(this);
 		if (task != null)
 			task.cancel(true);
 

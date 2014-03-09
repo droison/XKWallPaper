@@ -89,7 +89,7 @@ public class MainActivity extends SlidingFragmentActivity {
 		if (lockpaper.getBoolean("is_create", false)) {
 			LockService.startLockService(this);
 		}
-		
+
 		UpdateHandler uhandler = new UpdateHandler(this);
 		new Thread(new CheckVersionService(this, uhandler)).start();
 
@@ -147,7 +147,7 @@ public class MainActivity extends SlidingFragmentActivity {
 				}
 			}
 		});
-		
+
 		mContent = new PicFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString("dir", "pic");
@@ -166,19 +166,22 @@ public class MainActivity extends SlidingFragmentActivity {
 	}
 
 	public void switchContent(final Fragment fragmentContent, int fragmentTitle) {
-		if (fragmentContent != null) {
-			mContent = fragmentContent;
-			fm.beginTransaction().replace(R.id.content_frame, fragmentContent).commit();
-		}
-
 		mTitleBar.setTitleText(fragmentTitle);
-
+		getSlidingMenu().showContent();
 		Handler h = new Handler();
 		h.postDelayed(new Runnable() {
 			public void run() {
-				getSlidingMenu().showContent();
+				if (fragmentContent != null) {
+					mContent = fragmentContent;
+					fm.beginTransaction().replace(R.id.content_frame, fragmentContent).commit();
+				}
 			}
-		}, 50);
+		}, 100);
+		if (fragmentTitle <= 5 && fragmentTitle >= 2) {
+			tab_frame.setVisibility(View.VISIBLE);
+		}else{
+			tab_frame.setVisibility(View.GONE);
+		}
 	}
 
 	public void switchSearchContent(SearchFragment searchFragment) {

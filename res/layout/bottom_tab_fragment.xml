@@ -20,6 +20,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/bottom_setlayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1" >

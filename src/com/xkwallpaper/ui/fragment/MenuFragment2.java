@@ -13,12 +13,12 @@ import com.xkwallpaper.ui.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -130,6 +130,7 @@ public class MenuFragment2 extends BaiduMTJFragment implements OnClickListener {
 		if (parentActivity == null) {
 			return;
 		}
+		((InputMethodManager) parentActivity.getSystemService(parentActivity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(parentActivity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
 		switch (arg0.getId()) {
 		case R.id.ll_tab_search:
