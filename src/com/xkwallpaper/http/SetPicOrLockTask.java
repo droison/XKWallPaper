@@ -148,7 +148,7 @@ public class SetPicOrLockTask extends AsyncTask<String, Integer, String> {
 		boolean isComplete = false;
 		if (null != path) {
 			if (dir.equals("lock")) {
-				String filePath = mActivity.getCacheDir() + "/" + "lockpaper.jpg";
+				String filePath = AppConstants.Lock_Paper_Path;
 
 				float w = mActivity.getResources().getDisplayMetrics().widthPixels;
 				float h = mActivity.getResources().getDisplayMetrics().heightPixels;

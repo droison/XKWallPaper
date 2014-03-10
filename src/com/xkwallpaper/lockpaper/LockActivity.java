@@ -10,6 +10,8 @@ import com.xkwallpaper.ui.R;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
@@ -22,7 +24,6 @@ public class LockActivity extends BaiduMTJActivity {
 	float temp = 0;
 
 	private static final boolean DBG = true;
-	private static final int FLAG_HOMEKEY_DISPATCHED = 0x80000000;
 	private static final String TAG = "MainActivity";
 	public static StatusViewManager mStatusViewManager;
 
@@ -31,6 +32,8 @@ public class LockActivity extends BaiduMTJActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+
 		setContentView(R.layout.activity_lockpaper);
 
 		mStatusViewManager = new StatusViewManager(this, this.getApplicationContext());
@@ -61,15 +64,28 @@ public class LockActivity extends BaiduMTJActivity {
 				finish();
 			}
 		});
-		
+
 		ShareSDK.initSDK(this);
-		// LockService.startLockService(this);
-	}
+		TelephonyManager phoneManager = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
+		// 手动注册对PhoneStateListener中的listen_call_state状态进行监听
+		phoneManager.listen(new PhoneStateListener() {
+			@Override
+			public void onCallStateChanged(int state, String incomingNumber) {
+				switch (state) {
+				case TelephonyManager.CALL_STATE_IDLE:
+					break;
+				case TelephonyManager.CALL_STATE_RINGING:
+					finish();
+					break;
+				case TelephonyManager.CALL_STATE_OFFHOOK:
+					finish();
+				default:
+					break;
+				}
+				super.onCallStateChanged(state, incomingNumber);
+			}
+		}, PhoneStateListener.LISTEN_CALL_STATE);
 
-
-	@Override
-	public void onAttachedToWindow() {
-		super.onAttachedToWindow();
 	}
 
 	@Override
@@ -109,14 +125,6 @@ public class LockActivity extends BaiduMTJActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-	}
-
-	@Override
-	public void onDetachedFromWindow() {
-		// TODO Auto-generated method stub
-		super.onDetachedFromWindow();
-		if (DBG)
-			Log.d(TAG, "onDetachedFromWindow()");
 	}
 
 }

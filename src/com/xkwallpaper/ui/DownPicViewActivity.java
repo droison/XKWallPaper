@@ -130,7 +130,7 @@ public class DownPicViewActivity extends BaiduMTJFragmentActivity {
 				break;
 			case R.id.down_tab_setpaper:
 				if (paper.getDir().equals("lock")) {
-					String filePath = DownPicViewActivity.this.getCacheDir() + "/" + "lockpaper.jpg";
+					String filePath = AppConstants.Lock_Paper_Path;
 					float w = DownPicViewActivity.this.getResources().getDisplayMetrics().widthPixels;
 					float h = DownPicViewActivity.this.getResources().getDisplayMetrics().heightPixels;
 					ImageUtil.bitMapCut(path, filePath, h / w);

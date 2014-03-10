@@ -53,7 +53,7 @@ import android.widget.Toast;
 public class SetFragment extends BaiduMTJFragment implements OnClickListener {
 
 	private View root;
-	private RelativeLayout set_closelock,set_startlock, set_headlayout, set_nicklayout, set_phonelayout, set_pwdlayout, set_snslayout;
+	private RelativeLayout set_closelock, set_startlock, set_headlayout, set_nicklayout, set_phonelayout, set_pwdlayout, set_snslayout;
 	private MainActivity parentActivity;
 	private SharedPreferences lockpaper;
 	private SharedPreferences.Editor editor;
@@ -95,7 +95,7 @@ public class SetFragment extends BaiduMTJFragment implements OnClickListener {
 			set_closelock.setVisibility(View.GONE);
 			String paperPath = lockpaper.getString("paper_path", "");
 			int paper_Id = lockpaper.getInt("paper_id", -1);
-			if(!"".equals(paperPath)&&paper_Id!=-1){
+			if (!"".equals(paperPath) && paper_Id != -1) {
 				set_startlock.setVisibility(View.VISIBLE);
 			}
 		}
@@ -302,25 +302,25 @@ public class SetFragment extends BaiduMTJFragment implements OnClickListener {
 						dialogUtil.showDownloadDialog(parentActivity, "正在绑定");
 						if (weibo.isValid()) {
 							weibo.removeAccount();
-						} else {
-							weibo.setPlatformActionListener(new PlatformActionListener() {
-
-								public void onError(Platform platform, int action, Throwable t) {
-									dialogUtil.dismissDownloadDialog();
-								}
-
-								public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
-									bindBase.setUid(platform.getDb().get("weibo"));
-									ThreadExecutor.execute(new PostData(parentActivity, bindHandler, bindBase, 6));
-								}
-
-								public void onCancel(Platform platform, int action) {
-									dialogUtil.dismissDownloadDialog();
-								}
-
-							});
-							weibo.showUser(null);
 						}
+
+						weibo.setPlatformActionListener(new PlatformActionListener() {
+
+							public void onError(Platform platform, int action, Throwable t) {
+								dialogUtil.dismissDownloadDialog();
+							}
+
+							public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
+								bindBase.setUid(platform.getDb().get("weibo"));
+								ThreadExecutor.execute(new PostData(parentActivity, bindHandler, bindBase, 6));
+							}
+
+							public void onCancel(Platform platform, int action) {
+								dialogUtil.dismissDownloadDialog();
+							}
+
+						});
+						weibo.showUser(null);
 					} catch (Exception e) {
 						dialogUtil.showSetPicToast(parentActivity, "绑定异常，请重试");
 						Log.e(TAG, "绑定微博异常", e);
@@ -342,25 +342,24 @@ public class SetFragment extends BaiduMTJFragment implements OnClickListener {
 						dialogUtil.showDownloadDialog(parentActivity, "正在绑定");
 						if (qq.isValid()) {
 							qq.removeAccount();
-						} else {
-							qq.setPlatformActionListener(new PlatformActionListener() {
-
-								public void onError(Platform platform, int action, Throwable t) {
-									dialogUtil.dismissDownloadDialog();
-								}
-
-								public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
-									bindBase.setUid(platform.getDb().get("weibo"));
-									ThreadExecutor.execute(new PostData(parentActivity, bindHandler, bindBase, 6));
-								}
-
-								public void onCancel(Platform platform, int action) {
-									dialogUtil.dismissDownloadDialog();
-								}
-
-							});
-							qq.showUser(null);
 						}
+						qq.setPlatformActionListener(new PlatformActionListener() {
+
+							public void onError(Platform platform, int action, Throwable t) {
+								dialogUtil.dismissDownloadDialog();
+							}
+
+							public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
+								bindBase.setUid(platform.getDb().get("weibo"));
+								ThreadExecutor.execute(new PostData(parentActivity, bindHandler, bindBase, 6));
+							}
+
+							public void onCancel(Platform platform, int action) {
+								dialogUtil.dismissDownloadDialog();
+							}
+
+						});
+						qq.showUser(null);
 					} catch (Exception e) {
 						dialogUtil.showSetPicToast(parentActivity, "绑定异常，请重试");
 						Log.e(TAG, "绑定QQ异常", e);

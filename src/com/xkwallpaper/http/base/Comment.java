@@ -16,6 +16,24 @@ public class Comment implements Serializable {
 	private Date time;
 	private String parent_username;
 	private String sphoto;
+	private int paper_id;
+	private int paper_style;
+
+	public int getPaper_id() {
+		return paper_id;
+	}
+
+	public void setPaper_id(int paper_id) {
+		this.paper_id = paper_id;
+	}
+
+	public int getPaper_style() {
+		return paper_style;
+	}
+
+	public void setPaper_style(int paper_style) {
+		this.paper_style = paper_style;
+	}
 
 	public String getSphoto() {
 		return sphoto;

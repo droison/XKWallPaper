@@ -3,28 +3,38 @@ package com.xkwallpaper.ui.fragment;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.http.HttpStatus;
+
 import com.xkwallpaper.baidumtj.BaiduMTJFragment;
 import com.xkwallpaper.constants.AppConstants;
 import com.xkwallpaper.http.AsyncImageLoader;
 import com.xkwallpaper.http.AsyncImageLoader.ImageCallback;
 import com.xkwallpaper.http.DeleteComment;
 import com.xkwallpaper.http.GetList;
+import com.xkwallpaper.http.HTTP;
 import com.xkwallpaper.http.base.Comment;
+import com.xkwallpaper.http.base.HttpResponseEntity;
+import com.xkwallpaper.http.base.Paper;
 import com.xkwallpaper.thread.ThreadExecutor;
 import com.xkwallpaper.ui.MainActivity;
+import com.xkwallpaper.ui.PicInfoActivity;
 import com.xkwallpaper.ui.R;
+import com.xkwallpaper.ui.VideoInfoActivity;
 import com.xkwallpaper.ui.component.PullToRefreshView;
 import com.xkwallpaper.util.DialogUtil;
+import com.xkwallpaper.util.JsonUtil;
+import com.xkwallpaper.util.StringUtil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -96,7 +106,7 @@ public class MyCommetFragment extends BaiduMTJFragment implements PullToRefreshV
 				if (page == 1) {
 					my_comment_linearlayout.removeAllViews();
 				}
-				if (commentList==null||commentList.size() == 0) {
+				if (commentList == null || commentList.size() == 0) {
 					root.onFooterShow("已到最后了", false);
 					Toast.makeText(parentActivity, "已到最后了", Toast.LENGTH_SHORT).show();
 					return;
@@ -107,7 +117,7 @@ public class MyCommetFragment extends BaiduMTJFragment implements PullToRefreshV
 					View v = adapter.getDropDownView(i, null, null);
 					my_comment_linearlayout.addView(v);
 				}
-				
+
 				break;
 			case AppConstants.HANDLER_HTTPSTATUS_ERROR:
 				Toast.makeText(parentActivity, "网络访问出错", Toast.LENGTH_SHORT).show();
@@ -183,13 +193,22 @@ public class MyCommetFragment extends BaiduMTJFragment implements PullToRefreshV
 
 			final ImageView img = (ImageView) convertView.findViewById(R.id.my_comment_pic);
 			TextView content = (TextView) convertView.findViewById(R.id.my_comment_content);
+			String dir = null;
+			if(comment.getPaper_style()==1){
+				dir = "pic";
+			}else if (comment.getPaper_style()==2) {
+				dir = "lock";
+			}else{
+				dir = "vid";
+			}
+				
 			imageLoader.loadDrawable(parentActivity, AppConstants.HTTPURL.serverIP + comment.getSphoto(), new ImageCallback() {
 
 				@Override
 				public void imageLoaded(Bitmap bm, String imageUrl) {
 					img.setImageBitmap(bm);
 				}
-			}, "icon", "comment" + comment.getId() + ".thumb");
+			}, dir, comment.getPaper_id() + ".thumb");
 			content.setText(comment.getContent());
 			convertView.setOnLongClickListener(new OnLongClickListener() {
 
@@ -201,6 +220,14 @@ public class MyCommetFragment extends BaiduMTJFragment implements PullToRefreshV
 				}
 			});
 
+			convertView.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					dialogUtil.showProgressDialog(parentActivity, "读取数据...");
+					ThreadExecutor.execute(new GetPaperInfoThread(comment.getPaper_id(), comment.getPaper_style(), getPaperInfoHandler));
+				}
+			});
 			return convertView;
 		}
 
@@ -246,5 +273,83 @@ public class MyCommetFragment extends BaiduMTJFragment implements PullToRefreshV
 			});
 		}
 
+	}
+
+	Handler getPaperInfoHandler = new Handler() {
+
+		public void handleMessage(Message msg) {
+			dialogUtil.dismissProgressDialog();
+			switch (msg.what) {
+			case AppConstants.HANDLER_MESSAGE_NORMAL:
+				Paper paper = (Paper) msg.obj;
+				if (paper.getStyle() == 3) {
+					Intent toVidInfoActivity = new Intent(parentActivity, VideoInfoActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("paper", paper);
+					bundle.putString("dir", "vid");
+					toVidInfoActivity.putExtras(bundle);
+					parentActivity.startActivity(toVidInfoActivity);
+				} else {
+					String dir = paper.getStyle() == 1 ? "pic" : "lock";
+					Intent toPicInfoActivity = new Intent(parentActivity, PicInfoActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("paper", paper);
+					bundle.putString("dir", dir);
+					toPicInfoActivity.putExtras(bundle);
+					parentActivity.startActivity(toPicInfoActivity);
+				}
+				break;
+			case AppConstants.HANDLER_HTTPSTATUS_ERROR:
+				Toast.makeText(parentActivity, "失败，请稍后重试", Toast.LENGTH_SHORT).show();
+				break;
+			}
+		};
+	};
+
+	class GetPaperInfoThread implements Runnable {
+		int paper_id;
+		int paper_style;
+		Handler mHandler;
+
+		public GetPaperInfoThread(int paper_id, int paper_style, Handler mHandler) {
+			this.paper_id = paper_id;
+			this.paper_style = paper_style;
+			this.mHandler = mHandler;
+		}
+
+		@Override
+		public void run() {
+			Paper paper = getPaperInfo(paper_id, paper_style);
+			if (paper == null) {
+				mHandler.sendEmptyMessage(AppConstants.HANDLER_HTTPSTATUS_ERROR);
+			} else {
+				paper.setStyle(paper_style);
+				mHandler.sendMessage(mHandler.obtainMessage(AppConstants.HANDLER_MESSAGE_NORMAL, paper));
+			}
+
+		}
+
+	}
+
+	private Paper getPaperInfo(int paper_id, int paper_style) {
+		String url = "";
+		if (paper_style == 1) {
+			url = AppConstants.HTTPURL.picInfo + paper_id;
+		} else if (paper_style == 2) {
+			url = AppConstants.HTTPURL.lockInfo + paper_id;
+		} else {
+			url = AppConstants.HTTPURL.vidInfo + paper_id;
+		}
+		HttpResponseEntity hre = HTTP.get(url);
+		Paper paper = null;
+		if (hre != null && hre.getHttpResponseCode() == HttpStatus.SC_OK) {
+			try {
+				String json = StringUtil.byte2String(hre.getB());
+				paper = (Paper) JsonUtil.jsonToObject(json, Paper.class);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return paper;
 	}
 }

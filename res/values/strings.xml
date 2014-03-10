@@ -9,7 +9,7 @@
     <string name="month_day_year">yyyy-MM-dd EEE</string>
 
     <!-- about -->
-    <string name="about_version">版本：测试版1.0</string>
+    <string name="about_version">版本：测试版3.10</string>
     <string name="about_contactus">星酷</string>
     <string name="about_update">检查更新</string>
     <string name="about_share">分享给好友</string>

@@ -1,25 +1,40 @@
 package com.xkwallpaper.ui;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 import cn.sharesdk.framework.ShareSDK;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
+import com.xkwallpaper.lockpaper.LockActivity;
 import com.xkwallpaper.lockpaper.LockService;
 import com.xkwallpaper.ui.fragment.MainTabFragment;
 import com.xkwallpaper.ui.fragment.MenuFragment2;
@@ -40,6 +55,15 @@ public class MainActivity extends SlidingFragmentActivity {
 	private boolean isMainTab = true;
 	private boolean isMenuOpen = false;
 	private boolean isSearch = false;
+	BroadcastReceiver myBroadcastReceivernew = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			String homeKey = intent.getExtras().get("HomeKey").toString();
+			Log.i("MainActivity", homeKey);
+		}
+	};
 
 	public boolean isMainTab() {
 		return isMainTab;
@@ -65,6 +89,48 @@ public class MainActivity extends SlidingFragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.responsive_content_frame);
+		initSlidingMenu(savedInstanceState);
+
+		Set<String> tests = getIntent().getCategories();
+		if (tests.contains("android.intent.category.LAUNCHER")) {
+			setUpView();
+		} else if (tests.contains("android.intent.category.HOME")) {
+			ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+			String name = manager.getRunningTasks(1).get(0).topActivity.getClassName();
+			check: if (!name.equals(LockActivity.class.getName())) {
+				Intent mIntent = new Intent(Intent.ACTION_MAIN);
+				mIntent.addCategory(Intent.CATEGORY_HOME);
+				PackageManager pm = getPackageManager();
+				List<ResolveInfo> ris = pm.queryIntentActivities(mIntent, 0);
+				for (ResolveInfo ri : ris) {
+					SharedPreferences choosehome = getSharedPreferences("choosehome", 0);
+					String choosehomepackagename = choosehome.getString("packagename", "-1");
+					if (ri.activityInfo.packageName.equals(choosehomepackagename)) {
+						Intent intent = pm.getLaunchIntentForPackage(choosehomepackagename);
+						startActivity(intent);
+						break check;
+					}
+					if (ri.activityInfo.packageName.equals(getApplication().getPackageName())) {
+						ris.remove(ri);
+					}
+				}
+				if (ris.size() == 1) {
+					ResolveInfo res = ris.get(0); // 该应用的包名和主Activity
+					String pkg = res.activityInfo.packageName;
+					Intent intent = pm.getLaunchIntentForPackage(pkg);
+					startActivity(intent);
+				} else if (ris.size() > 1) {
+					Intent toChooseHome = new Intent(this, ChooseHomeActivity.class);
+					startActivity(toChooseHome);
+				}
+			}
+			finish();
+		}
+		// android.intent.category.LAUNCHER
+	}
+
+	private void setUpView() {
+
 		start_bg = (ImageView) this.findViewById(R.id.start_bg);
 		Handler startHandler = new Handler();
 		startHandler.postDelayed(new Runnable() {
@@ -75,15 +141,46 @@ public class MainActivity extends SlidingFragmentActivity {
 			}
 		}, 3000);
 
+		menu.setOnOpenListener(new OnOpenListener() {
+
+			@Override
+			public void onOpen() {
+				isMenuOpen = true;
+				if (isMainTab) {
+					menuFragment.switchImageView((ImageView) MainActivity.this.findViewById(fragmentNum));
+				}
+				menuFragment.setUserInfo();
+			}
+		});
+		menu.setOnCloseListener(new OnCloseListener() {
+
+			@Override
+			public void onClose() {
+				isMenuOpen = false;
+				if (isMainTab) {
+					tab_frame.setVisibility(View.VISIBLE);
+					maintabFragment.switchTab(fragmentNum);
+				} else {
+					tab_frame.setVisibility(View.GONE);
+				}
+			}
+		});
+		menuFragment = new MenuFragment2();
+		mContent = new PicFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString("dir", "pic");
+		mContent.setArguments(bundle);
+		getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mContent).commit();
+		getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, menuFragment).commit();
+
 		mTitleBar = new TitleBarFragment();
 		maintabFragment = new MainTabFragment();
-		menuFragment = new MenuFragment2();
+
 		tab_frame = (FrameLayout) this.findViewById(R.id.tab_frame);
 		fm = getSupportFragmentManager();
 
 		getSupportFragmentManager().beginTransaction().replace(R.id.titlebar_frame, mTitleBar).commit();
 		getSupportFragmentManager().beginTransaction().replace(R.id.tab_frame, maintabFragment).commit();
-		initSlidingMenu(savedInstanceState);
 
 		SharedPreferences lockpaper = getSharedPreferences("lockpaper", 0);
 		if (lockpaper.getBoolean("is_create", false)) {
@@ -94,6 +191,7 @@ public class MainActivity extends SlidingFragmentActivity {
 		new Thread(new CheckVersionService(this, uhandler)).start();
 
 		ShareSDK.initSDK(this);
+
 	}
 
 	private void initSlidingMenu(Bundle savedInstanceState) {
@@ -123,46 +221,6 @@ public class MainActivity extends SlidingFragmentActivity {
 		// menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 		// }
 
-		menu.setOnOpenListener(new OnOpenListener() {
-
-			@Override
-			public void onOpen() {
-				isMenuOpen = true;
-				if (isMainTab) {
-					menuFragment.switchImageView((ImageView) MainActivity.this.findViewById(fragmentNum));
-				}
-				menuFragment.setUserInfo();
-			}
-		});
-		menu.setOnCloseListener(new OnCloseListener() {
-
-			@Override
-			public void onClose() {
-				isMenuOpen = false;
-				if (isMainTab) {
-					tab_frame.setVisibility(View.VISIBLE);
-					maintabFragment.switchTab(fragmentNum);
-				} else {
-					tab_frame.setVisibility(View.GONE);
-				}
-			}
-		});
-
-		mContent = new PicFragment();
-		Bundle bundle = new Bundle();
-		bundle.putString("dir", "pic");
-		mContent.setArguments(bundle);
-
-		getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mContent).commit();
-
-		// set the Behind View Fragment
-		getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, menuFragment).commit();
-
-		// menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-		// menu.setShadowWidthRes(R.dimen.shadow_width);
-		// menu.setShadowDrawable(R.drawable.shadow);
-		// menu.setBehindScrollScale(0.25f);
-		// menu.setFadeDegree(0.25f);
 	}
 
 	public void switchContent(final Fragment fragmentContent, int fragmentTitle) {
@@ -179,7 +237,7 @@ public class MainActivity extends SlidingFragmentActivity {
 		}, 100);
 		if (fragmentTitle <= 5 && fragmentTitle >= 2) {
 			tab_frame.setVisibility(View.VISIBLE);
-		}else{
+		} else {
 			tab_frame.setVisibility(View.GONE);
 		}
 	}
@@ -211,12 +269,6 @@ public class MainActivity extends SlidingFragmentActivity {
 		}
 	}
 
-	public void onBirdPressed(int pos) {
-		Intent intent = new Intent(this, PicViewActivity.class);
-		intent.putExtra("pos", pos);
-		startActivity(intent);
-	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -224,13 +276,6 @@ public class MainActivity extends SlidingFragmentActivity {
 			toggle();
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		// getSupportFragmentManager().putFragment(outState, "mContent",
-		// mContent);
 	}
 
 	@Override

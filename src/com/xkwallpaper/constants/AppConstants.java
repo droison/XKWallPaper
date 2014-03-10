@@ -9,7 +9,7 @@ public class AppConstants {
 	public static final String APP_FILE_NAME = "xingku";
 	public static final String APP_FILE_PATH = Environment.getExternalStorageDirectory() + "/" + APP_FILE_NAME;
 	public static final String TEMP_HEAD_FILE_PATH = Environment.getExternalStorageDirectory() + "/" + APP_FILE_NAME + "/head.jpg";
-	
+	public static final String Lock_Paper_Path = APP_FILE_PATH + "/default.lockpaper";
 	/**
 	 * 网络访问相关的常量,以200作为头，希望HTTP code永远200！
 	 */

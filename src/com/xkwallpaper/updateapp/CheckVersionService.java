@@ -8,6 +8,8 @@ import com.xkwallpaper.util.JsonUtil;
 import com.xkwallpaper.util.StringUtil;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
 
 public class CheckVersionService implements Runnable {
@@ -25,6 +27,17 @@ public class CheckVersionService implements Runnable {
 
     		HttpResponseEntity hre = HTTP.get(AppConstants.HTTPURL.checkVersion);
     		if(hre == null){
+    			mHandler.sendEmptyMessage(AppConstants.HANDLER_HTTPSTATUS_ERROR);
+    			return;
+    		}
+    		
+    		Boolean b = false;
+    		ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+    		if (networkInfo != null) {
+    			b = networkInfo.isAvailable();
+    		}
+    		if (!b) {
     			mHandler.sendEmptyMessage(AppConstants.HANDLER_HTTPSTATUS_ERROR);
     			return;
     		}
