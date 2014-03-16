@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.PermissionInfo;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -102,6 +103,7 @@ public class MainActivity extends SlidingFragmentActivity {
 				mIntent.addCategory(Intent.CATEGORY_HOME);
 				PackageManager pm = getPackageManager();
 				List<ResolveInfo> ris = pm.queryIntentActivities(mIntent, 0);
+				ResolveInfo xkri = null;
 				for (ResolveInfo ri : ris) {
 					SharedPreferences choosehome = getSharedPreferences("choosehome", 0);
 					String choosehomepackagename = choosehome.getString("packagename", "-1");
@@ -111,14 +113,18 @@ public class MainActivity extends SlidingFragmentActivity {
 						break check;
 					}
 					if (ri.activityInfo.packageName.equals(getApplication().getPackageName())) {
-						ris.remove(ri);
+						xkri = ri;
 					}
 				}
+				ris.remove(xkri);
 				if (ris.size() == 1) {
 					ResolveInfo res = ris.get(0); // 该应用的包名和主Activity
 					String pkg = res.activityInfo.packageName;
-					Intent intent = pm.getLaunchIntentForPackage(pkg);
-					startActivity(intent);
+					String cls = res.activityInfo.name;
+					ComponentName componet = new ComponentName(pkg, cls);
+					Intent i = new Intent();
+					i.setComponent(componet);
+					startActivity(i);
 				} else if (ris.size() > 1) {
 					Intent toChooseHome = new Intent(this, ChooseHomeActivity.class);
 					startActivity(toChooseHome);

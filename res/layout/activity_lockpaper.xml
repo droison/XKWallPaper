@@ -1,68 +1,121 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/lock_linearlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/default_lock_bg"
     tools:context=".LockActivity" >
 
-    <com.xkwallpaper.lockpaper.TouchLayout
-        android:id="@+id/lock_touchtest"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <FrameLayout
+        android:id="@+id/lock_linearlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:background="@drawable/default_lock_bg" >
-    </com.xkwallpaper.lockpaper.TouchLayout>
+    </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/lock_time_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dip"
-        android:layout_marginTop="40dip" >
+    <com.xkwallpaper.lockpaper.SlideBar
+        android:id="@+id/slideBar"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
-        <!-- 时间显示 -->
+        <RelativeLayout
+            android:id="@+id/lock_touchtest"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dip"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#ffffff"
-            android:textSize="80sp" />
+            <LinearLayout
+                android:id="@+id/lock_time_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/time_bg"
+                android:orientation="vertical" >
 
-        <!-- 上午、下午显示 -->
+                <!-- 时间显示 -->
 
-        <TextView
-            android:id="@+id/am_pm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dip"
-            android:ellipsize="none"
-            android:singleLine="true"
-            android:textSize="35sp" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="6dip"
+                    android:text="12:44"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#ffffff"
+                    android:textSize="70sp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/lock_time_layout"
-        android:layout_marginRight="20dip"
-        android:layout_marginTop="20dip"
-        android:orientation="vertical" >
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:singleLine="true"
+                    android:text="03月16 周日"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="25sp" />
+            </LinearLayout>
 
-        <!-- 日期显示 -->
+            <TextView
+                android:id="@+id/lock_praisePlus"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="150dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="+1"
+                android:visibility="gone"
+                android:textSize="26sp" />
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textStyle="italic"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="20sp" />
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/lock_praise"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="100dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/praise" />
+
+            <ImageView
+                android:id="@+id/lock_share"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="100dp"
+                android:layout_marginLeft="80dp"
+                android:src="@drawable/share" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="40dp"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/lock_promt" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="滑动来解锁"
+                    android:textColor="@color/red"
+                    android:textSize="24sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+        </RelativeLayout>
+    </com.xkwallpaper.lockpaper.SlideBar>
 
 </RelativeLayout>

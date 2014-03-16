@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xkwallpaper.ui"
-    android:versionCode="14"
+    android:versionCode="15"
     android:versionName="3.10(待完成版)" >
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -24,13 +24,15 @@
     <uses-permission android:name="android.permission.PREVENT_POWER_KEY" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />  
 
     <uses-sdk
-        android:minSdkVersion="7"
+        android:minSdkVersion="10"
         android:targetSdkVersion="17" />
 
     <application
         android:allowBackup="true"
+        android:excludeFromRecents="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -74,9 +76,7 @@
             android:name="BaiduMobAd_WIFI_LOCATION"
             android:value="true" />
 
-        <activity
-            android:name="com.xkwallpaper.ui.MainActivity"
-            android:excludeFromRecents="true" >
+        <activity android:name="com.xkwallpaper.ui.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -96,7 +96,6 @@
         </activity>
         <activity
             android:name="com.xkwallpaper.lockpaper.LockActivity"
-            android:noHistory="true"
             android:launchMode="singleTask" >
             <intent-filter>
             </intent-filter>
@@ -127,6 +126,12 @@
         <service android:name="com.xkwallpaper.lockpaper.LockService" >
         </service>
 
+        <receiver android:name="com.xkwallpaper.receiver.BootBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

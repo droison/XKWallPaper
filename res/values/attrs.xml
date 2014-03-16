@@ -42,4 +42,19 @@
         <attr name="selectorDrawable" format="reference" />
     </declare-styleable>
 
+    
+     <declare-styleable name="GradientView">
+        <attr name="StringToShow" format="reference"/>
+        <attr name="TextSize" format="dimension"/>
+        <attr name="TextColor" format="integer"/>
+        <attr name="SlideColor" format="integer"/>
+    </declare-styleable>
+    
+    
+    <declare-styleable name="SlideBar">
+        <attr name="MinVelocityXToUnlock" format="integer"/>
+        <attr name="MinDistanceToUnlock" format="integer"/>
+        <attr name="LeftAnimationDuratioin" format="integer"/>
+        <attr name="RightAnimationDuratioin" format="integer"/>
+    </declare-styleable>
 </resources>

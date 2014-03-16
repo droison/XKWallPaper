@@ -32,26 +32,26 @@ public final class R {
 		public static final int dialog_cut_line = 0x7f020034;
 		public static final int dialog_split_h = 0x7f020035;
 		public static final int dialog_split_v = 0x7f020036;
-		public static final int popup_bg = 0x7f0200a3;
-		public static final int refresh = 0x7f0200ab;
-		public static final int refresh_button = 0x7f0200ac;
-		public static final int refresh_push = 0x7f0200ad;
-		public static final int title = 0x7f0200d4;
-		public static final int title_background = 0x7f0200d6;
+		public static final int popup_bg = 0x7f0200a4;
+		public static final int refresh = 0x7f0200ac;
+		public static final int refresh_button = 0x7f0200ad;
+		public static final int refresh_push = 0x7f0200ae;
+		public static final int title = 0x7f0200d7;
+		public static final int title_background = 0x7f0200d9;
 	}
 	public static final class id {
-		public static final int AlipayTitle = 0x7f08003d;
-		public static final int btn_refresh = 0x7f08003e;
-		public static final int dialog_button_group = 0x7f08005d;
-		public static final int dialog_content_view = 0x7f08005c;
-		public static final int dialog_divider = 0x7f08005a;
-		public static final int dialog_message = 0x7f08005b;
-		public static final int dialog_split_v = 0x7f08005f;
-		public static final int dialog_title = 0x7f080059;
-		public static final int left_button = 0x7f08005e;
-		public static final int mainView = 0x7f08003b;
-		public static final int right_button = 0x7f080060;
-		public static final int webView = 0x7f08003c;
+		public static final int AlipayTitle = 0x7f080040;
+		public static final int btn_refresh = 0x7f080041;
+		public static final int dialog_button_group = 0x7f080060;
+		public static final int dialog_content_view = 0x7f08005f;
+		public static final int dialog_divider = 0x7f08005d;
+		public static final int dialog_message = 0x7f08005e;
+		public static final int dialog_split_v = 0x7f080062;
+		public static final int dialog_title = 0x7f08005c;
+		public static final int left_button = 0x7f080061;
+		public static final int mainView = 0x7f08003e;
+		public static final int right_button = 0x7f080063;
+		public static final int webView = 0x7f08003f;
 	}
 	public static final class layout {
 		public static final int alipay = 0x7f030009;

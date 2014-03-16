@@ -11,6 +11,7 @@ import com.xkwallpaper.http.base.PostCommentBase;
 import com.xkwallpaper.thread.ThreadExecutor;
 import com.xkwallpaper.util.DialogUtil;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -110,8 +111,14 @@ public class ChooseHomeActivity extends BaiduMTJActivity {
 					SharedPreferences.Editor edit = choosehome.edit();
 					edit.putString("packagename", ri.activityInfo.packageName);
 					edit.commit();
-					Intent intent = pm.getLaunchIntentForPackage(ri.activityInfo.packageName);
-					startActivity(intent);
+					
+					String pkg = ri.activityInfo.packageName;
+					String cls = ri.activityInfo.name;
+					ComponentName componet = new ComponentName(pkg, cls);
+					Intent i = new Intent();
+					i.setComponent(componet);
+					startActivity(i);
+					
 					ChooseHomeActivity.this.finish();
 				}
 			});

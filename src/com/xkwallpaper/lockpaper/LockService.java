@@ -8,6 +8,7 @@ import com.xkwallpaper.util.ExitApplication;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.KeyguardManager;
+import android.app.KeyguardManager.KeyguardLock;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -26,6 +27,8 @@ public class LockService extends Service {
 	private static Intent serviceIntentInstance;
 	private static boolean isServiceStart = false;
 	private boolean phoneInUse = false;
+	private KeyguardManager mKeyguardManager;
+	private KeyguardLock mKeyguardLock;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -78,7 +81,7 @@ public class LockService extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 		LockService.this.unregisterReceiver(mScreenOnReceiver);
-		LockService.this.unregisterReceiver(mScreenOffReceiver);
+//		LockService.this.unregisterReceiver(mScreenOffReceiver);
 		if (isServiceStart) {
 			startService(serviceIntentInstance);
 		}
@@ -95,17 +98,19 @@ public class LockService extends Service {
 			if (dw != null && paper_Id != 0 && !paperPath.equals("") && lockpaper.getBoolean("is_create", false)) {
 
 				if (intent.getAction().equals("android.intent.action.SCREEN_ON")) {
-//					mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-//					mKeyguardLock = mKeyguardManager.newKeyguardLock("LockIntent");
-//					mKeyguardLock.disableKeyguard();
-					if(lockIntent == null){
+					// mKeyguardManager = (KeyguardManager)
+					// context.getSystemService(Context.KEYGUARD_SERVICE);
+					// mKeyguardLock =
+					// mKeyguardManager.newKeyguardLock("LockIntent");
+					// mKeyguardLock.disableKeyguard();
+					if (lockIntent == null) {
 						lockIntent = new Intent(context, LockActivity.class);
 						lockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(lockIntent);
 					}
 				}
-			
-			} 
+
+			}
 		}
 
 	};
@@ -124,30 +129,30 @@ public class LockService extends Service {
 //					mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
 //					mKeyguardLock = mKeyguardManager.newKeyguardLock("LockIntent");
 //					mKeyguardLock.disableKeyguard();
-					if(lockIntent == null){
+					if (lockIntent == null) {
 						lockIntent = new Intent(context, LockActivity.class);
 						lockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					}
-					if(!isTopActivity()){
+					if (!isTopActivity()) {
 						ExitApplication.getInstance().exit();
 					}
 					startActivity(lockIntent);
 				}
-			} 
-			
+			}
+
 		}
 
 	};
-	
-	private boolean isTopActivity(){  
+
+	private boolean isTopActivity() {
 		ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
-        List<RunningTaskInfo>  tasksInfo = am.getRunningTasks(1);  
-        if(tasksInfo.size() > 0){  
-            //应用程序位于堆栈的顶层  
-            if("com.xkwallpaper.ui".equals(tasksInfo.get(0).topActivity.getPackageName())){  
-                return true;  
-            }  
-        }  
-        return false;  
-    }  
+		List<RunningTaskInfo> tasksInfo = am.getRunningTasks(1);
+		if (tasksInfo.size() > 0) {
+			// 应用程序位于堆栈的顶层
+			if ("com.xkwallpaper.ui".equals(tasksInfo.get(0).topActivity.getPackageName())) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

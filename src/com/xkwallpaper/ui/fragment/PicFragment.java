@@ -1,5 +1,6 @@
 package com.xkwallpaper.ui.fragment;
 
+import com.alibaba.fastjson.JSON;
 import com.xkwallpaper.baidumtj.BaiduMTJFragment;
 import com.xkwallpaper.constants.AppConstants;
 import com.xkwallpaper.http.AsyncImageLoader;
@@ -29,6 +30,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -71,6 +73,10 @@ public class PicFragment extends BaiduMTJFragment implements PullToRefreshView.O
 	private PicGridAdapter picGridAdapter;
 	private int page = 1;
 	private int type = 1; // 1为壁纸，2为锁屏，3为视频
+	private boolean isPPTCompleteInit = false; // 标志位，如果完成初始化为true，未完成就是在读缓存
+	private boolean isPaperCompleteInit = false; // 标志位，如果完成初始化为true，未完成就是在读缓存
+	private SharedPreferences sp;
+	private SharedPreferences.Editor editor;
 
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -98,22 +104,26 @@ public class PicFragment extends BaiduMTJFragment implements PullToRefreshView.O
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		root = (PullToRefreshView) inflater.inflate(R.layout.pic_fragment, null);
-		setUpView();
-		setUpListener();
-		if (!isCompleteView)
-			initData();
+		Handler h = new Handler();
+		h.postDelayed(new Runnable() {
+			public void run() {
+				setUpView();
+				setUpListener();
+				if (!isCompleteView)
+					initData();
+			}
+		}, 100);
+
+		
 		return root;
 	}
 
 	private void initData() {
-
-		ThreadExecutor.execute(new GetList(parentActivity, pptHandler, pptUrl, 5));
-		ThreadExecutor.execute(new GetList(parentActivity, picListHandler, serverUrl + page, type));
 		dialogUtil.showProgressDialog(parentActivity, "正在更新数据...");
 		isGridRefresh = true;
-
 		isCompleteView = true;
-
+		ThreadExecutor.execute(new GetList(parentActivity, pptHandler, pptUrl, 5));
+		ThreadExecutor.execute(new GetList(parentActivity, picListHandler, serverUrl + page, type));
 	}
 
 	Handler pptHandler = new Handler() {
@@ -122,6 +132,19 @@ public class PicFragment extends BaiduMTJFragment implements PullToRefreshView.O
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
 				List<Paper> paperList = (List<Paper>) msg.obj;
+				int isInit = msg.arg1;
+				if (!isPPTCompleteInit) {
+					if(isInit == 0){
+						editor.putString("ppt", JSON.toJSONString(paperList));
+						editor.commit();
+						isPPTCompleteInit = true;
+					}
+					if (imageViews != null)
+						imageViews.clear();
+				}
+				
+				if (scheduledExecutorService != null)
+					scheduledExecutorService.shutdown();
 
 				if (paperList != null && paperList.size() == 3) {
 					imageViews = new ArrayList<ImageView>();
@@ -195,6 +218,20 @@ public class PicFragment extends BaiduMTJFragment implements PullToRefreshView.O
 		pic_linearLayout2 = (LinearLayout) root.findViewById(R.id.pic_linearLayout2);
 		picGridAdapter = new PicGridAdapter(pic_linearLayout1, pic_linearLayout2, parentActivity, dir);
 
+		sp = parentActivity.getSharedPreferences(dir, 0);
+		editor = sp.edit();
+		List<Paper> ppts = JSON.parseArray(sp.getString("ppt", "[]"), Paper.class);
+		List<Paper> papers = JSON.parseArray(sp.getString("paper", "[]"), Paper.class);
+		Message msg1 = new Message();
+		msg1.what = AppConstants.HANDLER_MESSAGE_NORMAL;
+		msg1.obj = ppts;
+		msg1.arg1 = 1;
+		pptHandler.sendMessage(msg1);
+		Message msg2 = new Message();
+		msg2.what = AppConstants.HANDLER_MESSAGE_NORMAL;
+		msg2.obj = papers;
+		msg2.arg1 = 1;
+		picListHandler.sendMessage(msg2);
 	}
 
 	private void setUpListener() {
@@ -223,14 +260,22 @@ public class PicFragment extends BaiduMTJFragment implements PullToRefreshView.O
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
 				List<Paper> paperList = (List<Paper>) msg.obj;
-				if (page == 1) {
+				int isInit = msg.arg1;
+				if (!isPaperCompleteInit || page == 1) {
+					if (isInit == 0) {
+						editor.putString("paper", JSON.toJSONString(paperList));
+						editor.commit();
+
+					}
 					picGridAdapter.removeAll();
 				}
 				picGridAdapter.addView(paperList);
-				if (paperList.size() == 0) {
+				if (paperList.size() == 0 && isPaperCompleteInit) {
 					root.onFooterShow("已到最后了", false);
 					Toast.makeText(parentActivity, "已到最后了", 1).show();
 				}
+				if (isInit == 0)
+					isPaperCompleteInit = true;
 				break;
 			case AppConstants.HANDLER_HTTPSTATUS_ERROR:
 				Toast.makeText(parentActivity, "网络访问出错", 1).show();
@@ -329,14 +374,25 @@ public class PicFragment extends BaiduMTJFragment implements PullToRefreshView.O
 	@Override
 	public void onFooterRefresh(PullToRefreshView view) {
 		isGridLoadMore = true;
-		page++;
-		ThreadExecutor.execute(new GetList(parentActivity, picListHandler, serverUrl + page, type));
+		if (!isPPTCompleteInit) {
+			ThreadExecutor.execute(new GetList(parentActivity, pptHandler, pptUrl, 5));
+		}
+		if (!isPaperCompleteInit) {
+			ThreadExecutor.execute(new GetList(parentActivity, picListHandler, serverUrl + page, type));
+		} else {
+			page++;
+			ThreadExecutor.execute(new GetList(parentActivity, picListHandler, serverUrl + page, type));
+		}
+
 		// getServiceRun(currentPageNo);
 		System.out.println("onFooterRefresh");
 	}
 
 	@Override
 	public void onHeaderRefresh(PullToRefreshView view) {
+		if (!isPPTCompleteInit) {
+			ThreadExecutor.execute(new GetList(parentActivity, pptHandler, pptUrl, 5));
+		}
 		isGridRefresh = true;
 		page = 1;
 		ThreadExecutor.execute(new GetList(parentActivity, picListHandler, serverUrl + page, type));

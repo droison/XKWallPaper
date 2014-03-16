@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">星酷壁纸</string>
+    <!-- 分享相关 -->
+    <string name="cancel">取消</string>
+    <string name="finish">完成</string>
+    <string name="sharing">分享操作正在后台进行…</string>
+    <string name="share_to">分享到</string>
+    <string name="share">分享</string>
+    <string name="multi_share">图文分享</string>
+    <string name="share_completed">分享成功</string>
+    <string name="share_canceled">分享已取消</string>
+    <string name="select_one_plat_at_least">请选择一个目标平台</string>
+    <string name="list_friends">%s的朋友</string>
+    <string name="share_failed">分享失败</string>
+    <string name="pull_to_refresh">下拉刷新</string>
+    <string name="release_to_refresh">松开刷新</string>
+    <string name="refreshing">刷新中…</string>
+    <string name="share_content">超级明星，酷炫壁纸！\n 大力推荐星酷娱乐！</string>
+    
+    <!-- 应用主要 -->
+    <string name="app_name">星酷娱乐</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="offline_text1">网络不给力呀</string>
@@ -64,4 +82,5 @@
     <string name="reg_hint_checknum">请输入手机验证码</string>
     <string name="reg_login">马上登录</string>
     <string name="reg_reg">注册</string>
+
 </resources>

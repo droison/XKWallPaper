@@ -37,7 +37,6 @@ import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class TouchLayout extends RelativeLayout {
-	private SlidingCompleteListener slidingCompleteListener;
 	float down = 0;
 	float move = 0;
 	float up = 0;
@@ -47,12 +46,12 @@ public class TouchLayout extends RelativeLayout {
 	private ImageView mShareView, mPraiseView;
 	private DpSpDip2Px dp2px;
 	private TextView praisePlus;
-	private PraiseDAO praiseDAO;
 	private Paper paper;
 	private Animation appearAnimation;
 	private View bottomLayout;
 	private AccountDAO accountDAO;
 	private DbAccount account;
+	private PraiseDAO praiseDAO;
 
 	public void setPaper(Paper paper) {
 		this.paper = paper;
@@ -88,94 +87,6 @@ public class TouchLayout extends RelativeLayout {
 			getViewMeasure();
 			setChildViewLayout();
 		}
-	}
-
-	public void setSlidingCompleteListener(SlidingCompleteListener slidingCompleteListener) {
-		this.slidingCompleteListener = slidingCompleteListener;
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent ev) {
-
-		final int action = ev.getAction();
-		final float y = ev.getY();
-		switch (action) {
-		case MotionEvent.ACTION_DOWN:
-			Log.d("testing", "_______________DDDDDDaaaaDDDDDDDDD________________-");
-			down = y;
-			if (down < (mHight - (mHight / 5)))
-				return false;
-			break;
-		case MotionEvent.ACTION_MOVE:
-			move = down - y;
-			if (move > 0) {
-				int height = getHeight();
-				android.view.animation.Animation animation = new android.view.animation.TranslateAnimation(0, 0, -move, 0);
-				animation.setDuration(5);
-				animation.setFillBefore(true);
-				animation.setAnimationListener(new AnimationListener() {
-
-					@Override
-					public void onAnimationStart(Animation animation) {
-						Log.d("testing", "___________onAnimationStart_______________-");
-					}
-
-					@Override
-					public void onAnimationRepeat(Animation animation) {
-						Log.d("testing", "____________onAnimationRepeat________________-");
-					}
-
-					@Override
-					public void onAnimationEnd(Animation animation) {
-						if (up > 0 && up < y / 4) {
-							try {
-								ObjectAnimator yBouncer = ObjectAnimator.ofFloat(TouchLayout.this, "y", -up, 0).setDuration(1500);
-								yBouncer.setInterpolator(new BounceInterpolator());
-								AnimatorSet bounceAnim = new AnimatorSet();
-								bounceAnim.play(yBouncer);
-								bounceAnim.start();
-							} catch (NoClassDefFoundError e) {
-								Log.e("TouchLayout", "锁屏为打开的完成动画", e);
-							}
-						}
-					}
-				});
-				startAnimation(animation);
-			}
-			break;
-		case MotionEvent.ACTION_UP:
-			up = down - y;
-			if (up > y / 4) {
-				float y2 = 2 * ev.getY();
-				android.view.animation.Animation animation = new android.view.animation.TranslateAnimation(0, 0, -move, -y2);
-				animation.setDuration(800);
-				animation.setFillAfter(true);
-				animation.setAnimationListener(new AnimationListener() {
-
-					@Override
-					public void onAnimationStart(Animation animation) {
-					}
-
-					@Override
-					public void onAnimationRepeat(Animation animation) {
-					}
-
-					@Override
-					public void onAnimationEnd(Animation animation) {
-						TouchLayout.this.setVisibility(View.GONE);
-						slidingCompleteListener.onCall();
-					}
-				});
-				startAnimation(animation);
-			}
-			Log.d("testing", "_______________UUUUUUUUUUUUUUUUUU________________-");
-			break;
-		}
-		return true;
-	}
-
-	public interface SlidingCompleteListener {
-		public void onCall();
 	}
 
 	/**
@@ -315,8 +226,8 @@ public class TouchLayout extends RelativeLayout {
 		bottomLayout.setOrientation(LinearLayout.HORIZONTAL);
 
 		ImageView bottomImage = new ImageView(mContext);
-		bottomImage.setLayoutParams(new LinearLayout.LayoutParams(dp2px.dip2px(45), dp2px.dip2px(35)));
-		bottomImage.setImageResource(R.drawable.lock_prompt);
+		bottomImage.setLayoutParams(new LinearLayout.LayoutParams(dp2px.dip2px(35), dp2px.dip2px(35)));
+		bottomImage.setImageResource(R.drawable.slide_icon);
 		bottomLayout.addView(bottomImage);
 
 		TextView bottomText = new TextView(mContext);
@@ -324,7 +235,7 @@ public class TouchLayout extends RelativeLayout {
 		lllp.setMargins(dp2px.dip2px(5), 0, 0, 0);
 		bottomText.setLayoutParams(lllp);
 		bottomText.setGravity(Gravity.CENTER);
-		bottomText.setText("向上滑动解锁");
+		bottomText.setText("向右滑动解锁");
 		bottomText.setTextSize(15);
 		bottomLayout.addView(bottomText);
 

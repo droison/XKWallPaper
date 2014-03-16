@@ -352,6 +352,8 @@ public class HTTP {
 	}
 
 	public static HttpResponseEntity get(String URL) {
+		if (URL == null)
+			return null;
 		String url = URL;
 
 		HttpGet listGet = new HttpGet(url);

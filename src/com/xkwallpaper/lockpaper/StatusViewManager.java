@@ -36,7 +36,6 @@ public class StatusViewManager implements MediaControl
 	private String mFormat;
 	
 	private static Activity mActivity;
-	private AmPm mAmPm;
     private Calendar mCalendar;
     public ContentObserver mFormatChangeObserver;
     public BroadcastReceiver mIntentReceiver;
@@ -67,31 +66,6 @@ public class StatusViewManager implements MediaControl
     	}
     }
 	
-    class AmPm {
-        private TextView mAmPmTextView;
-        private String mAmString, mPmString;
-
-        AmPm() {
-            mAmPmTextView = (TextView)findViewById(R.id.am_pm);
-            //获取显示上午、下午的字符串数组
-            String[] ampm = new DateFormatSymbols().getAmPmStrings();
-            mAmString = ampm[0];
-            mPmString = ampm[1];
-        }
-
-        void setShowAmPm(boolean show) {
-            if (mAmPmTextView != null) {
-                mAmPmTextView.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        }
-
-        void setIsMorning(boolean isMorning) {
-            if (mAmPmTextView != null) {
-                mAmPmTextView.setText(isMorning ? mAmString : mPmString);
-            }
-        }
-    }
-    
     private static class TimeChangedReceiver extends BroadcastReceiver {
         private WeakReference<StatusViewManager> mStatusViewManager;
         //private Context mContext;
@@ -159,15 +133,12 @@ public class StatusViewManager implements MediaControl
 
         CharSequence newTime = DateFormat.format(mFormat, mCalendar);
         mTimeView.setText(newTime);
-        mAmPm.setIsMorning(mCalendar.get(Calendar.AM_PM) == 0);
     }
     
     //设置时间显示格式，如果时间显示为12小时制，则显示上午、下午
     private void setDateFormat() 
     {
-        mFormat = android.text.format.DateFormat.is24HourFormat(mContext)
-            ? M24 : M12;
-        mAmPm.setShowAmPm(mFormat.equals(M12));
+        mFormat = M24;
     }
 
 	@Override
@@ -216,13 +187,12 @@ public class StatusViewManager implements MediaControl
 		// TODO Auto-generated method stub
 		mDateView = (TextView)findViewById(R.id.date);
 		//定义日期的显示格式，日期显示格式在donotTranslatr.xml文件中定义
-    	mDateFormat =  "yyyy/MM/dd EEE";
+    	mDateFormat =  "MM月dd  EEE";
     	mTimeView = (TextView) findViewById(R.id.time);
     	
     	/*创建AmPm对象，参数为设置的字体风格(如可设为Typeface.DEFAULT_BOLD粗体)，
     	 * 此处参数为空，默认情况。
     	 */
-        mAmPm = new AmPm();
         //获取mCalendar对象
         mCalendar = Calendar.getInstance();
         
