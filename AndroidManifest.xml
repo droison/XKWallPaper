@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xkwallpaper.ui"
-    android:versionCode="15"
-    android:versionName="3.10(待完成版)" >
+    android:versionCode="17"
+    android:versionName="3.17" >
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -24,7 +24,7 @@
     <uses-permission android:name="android.permission.PREVENT_POWER_KEY" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />  
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -36,7 +36,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:screenOrientation="portrait"
         android:theme="@style/AppTheme" >
 
         <!-- 您从百度网站获取的APP KEY -->
@@ -76,19 +75,32 @@
             android:name="BaiduMobAd_WIFI_LOCATION"
             android:value="true" />
 
-        <activity android:name="com.xkwallpaper.ui.MainActivity" >
+        <receiver android:name="com.xkwallpaper.ui.BootReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.LAUNCHER" />  
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.xkwallpaper.ui.MainActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.xkwallpaper.ui.PicInfoActivity" >
-        </activity>
-        <activity android:name="com.xkwallpaper.ui.PicViewActivity" />
-        <activity android:name="com.xkwallpaper.ui.DownPicViewActivity" />
+        <activity
+            android:name="com.xkwallpaper.ui.PicInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.xkwallpaper.ui.PicViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.xkwallpaper.ui.DownPicViewActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.xkwallpaper.ui.VideoPlayActivity"
             android:screenOrientation="landscape" />
@@ -96,18 +108,27 @@
         </activity>
         <activity
             android:name="com.xkwallpaper.lockpaper.LockActivity"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
             <intent-filter>
             </intent-filter>
         </activity>
         <activity
             android:name="com.xkwallpaper.ui.ChooseHomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyActivityDialog" />
-        <activity android:name="com.xkwallpaper.ui.LoginActivity" />
-        <activity android:name="com.xkwallpaper.ui.LostPwdActivity" />
-        <activity android:name="com.xkwallpaper.ui.RegisterActivity" />
+        <activity
+            android:name="com.xkwallpaper.ui.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.xkwallpaper.ui.LostPwdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.xkwallpaper.ui.RegisterActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.xkwallpaper.ui.CommentActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyActivityDialog" >
         </activity>
         <!-- 为了授权操作可以顺利完成，需要在application下注册下面的Activity -->
@@ -125,13 +146,6 @@
 
         <service android:name="com.xkwallpaper.lockpaper.LockService" >
         </service>
-
-        <receiver android:name="com.xkwallpaper.receiver.BootBroadcastReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

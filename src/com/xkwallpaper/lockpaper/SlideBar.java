@@ -1,6 +1,7 @@
 package com.xkwallpaper.lockpaper;
 
 import com.xkwallpaper.ui.R;
+
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,6 +11,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.RelativeLayout;
 
 @SuppressLint("NewApi")
@@ -47,7 +50,6 @@ public class SlideBar extends RelativeLayout {
 		a.recycle();
 	}
 
-	@SuppressLint("NewApi")
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		final int action = event.getActionMasked();
@@ -135,8 +137,12 @@ public class SlideBar extends RelativeLayout {
 
 	private void unlockSuccess() {
 		mOnTriggerListener.onTrigger();
-		animRightMoveAnimator = ObjectAnimator.ofFloat(mGradientView, "x", mGradientView.getX(), MaxDistance).setDuration(mRightAnimationDuration);
-		animRightMoveAnimator.start();
+		if (android.os.Build.VERSION.SDK_INT > 10) {
+			animRightMoveAnimator = ObjectAnimator.ofFloat(mGradientView, "x", mGradientView.getX(), MaxDistance).setDuration(mRightAnimationDuration);
+			animRightMoveAnimator.start();
+		}else{
+			
+		}
 	}
 
 	private void handleMove(MotionEvent event) {
@@ -145,7 +151,31 @@ public class SlideBar extends RelativeLayout {
 		if (mGradientViewIndicateLeft <= gradientViewStartX) {
 			mGradientViewIndicateLeft = gradientViewStartX;
 		}
-		mGradientView.setX(mGradientViewIndicateLeft);
+		if (android.os.Build.VERSION.SDK_INT > 10)
+			mGradientView.setX(mGradientViewIndicateLeft);
+		else {
+			android.view.animation.Animation animation = new android.view.animation.TranslateAnimation(mGradientViewIndicateLeft, 0, 0, 0);
+			animation.setDuration(1500);
+			animation.setFillBefore(true);
+			animation.setAnimationListener(new AnimationListener() {
+
+				@Override
+				public void onAnimationStart(Animation animation) {
+					Log.d("testing", "___________onAnimationStart_______________-");
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+					Log.d("testing", "____________onAnimationRepeat________________-");
+				}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+
+				}
+			});
+			mGradientView.startAnimation(animation);
+		}
 	}
 
 	private void handleDown(MotionEvent event) {
@@ -161,8 +191,10 @@ public class SlideBar extends RelativeLayout {
 	}
 
 	private void resetControls() {
-		animLeftMoveAnimator = ObjectAnimator.ofFloat(mGradientView, "x", mGradientView.getX(), gradientViewStartX).setDuration(mLeftAnimationDuration);
-		animLeftMoveAnimator.start();
+		if (android.os.Build.VERSION.SDK_INT > 10) {
+			animLeftMoveAnimator = ObjectAnimator.ofFloat(mGradientView, "x", mGradientView.getX(), gradientViewStartX).setDuration(mLeftAnimationDuration);
+			animLeftMoveAnimator.start();
+		}
 	}
 
 }
