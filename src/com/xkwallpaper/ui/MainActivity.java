@@ -1,6 +1,8 @@
+/**
+ * 主页面，用于处理：默认桌面的处理、主页面各fragment切换的逻辑、APP的升级、APP的退出、左侧滑页面的初始化和逻辑
+ */
 package com.xkwallpaper.ui;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,10 +13,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.pm.PermissionInfo;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,10 +25,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 import cn.sharesdk.framework.ShareSDK;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;

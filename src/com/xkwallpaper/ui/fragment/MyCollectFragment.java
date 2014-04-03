@@ -1,3 +1,6 @@
+/**
+ * 我的页面中，我的收藏的fragment
+ */
 package com.xkwallpaper.ui.fragment;
 
 import java.util.List;

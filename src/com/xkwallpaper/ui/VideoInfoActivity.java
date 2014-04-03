@@ -1,3 +1,6 @@
+/**
+ * 视频详情页面
+ */
 package com.xkwallpaper.ui;
 
 import java.io.File;

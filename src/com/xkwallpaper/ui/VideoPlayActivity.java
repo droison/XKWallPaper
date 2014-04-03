@@ -1,3 +1,6 @@
+/**
+ * 视频播放页面
+ */
 package com.xkwallpaper.ui;
 
 import com.xkwallpaper.baidumtj.BaiduMTJActivity;

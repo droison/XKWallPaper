@@ -1,3 +1,6 @@
+/**
+ * 搜索结果界面的fragment，和PicFragment页面类似，同时承担着视频、壁纸、锁屏三种样式的逻辑
+ */
 package com.xkwallpaper.ui.fragment;
 
 import com.xkwallpaper.baidumtj.BaiduMTJFragment;

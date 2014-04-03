@@ -1,3 +1,6 @@
+/**
+ * 主页面 壁纸、锁屏、视频页面主体部分的fragment，三种根据dir参数的不同(pic lock vid)的不同加以区分，该fragment包含PPT的逻辑，也包含网格图片的逻辑
+ */
 package com.xkwallpaper.ui.fragment;
 
 import com.alibaba.fastjson.JSON;
@@ -32,7 +35,6 @@ import java.util.concurrent.TimeUnit;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
@@ -256,7 +258,6 @@ public class PicFragment extends BaiduMTJFragment implements PullToRefreshView.O
 	private Handler picListHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			dialogUtil.dismissProgressDialog();
-			completeGridRefresh();
 			switch (msg.what) {
 			case AppConstants.HANDLER_MESSAGE_NORMAL:
 				List<Paper> paperList = (List<Paper>) msg.obj;
@@ -284,6 +285,7 @@ public class PicFragment extends BaiduMTJFragment implements PullToRefreshView.O
 				dialogUtil.showNoNetWork(parentActivity);
 				break;
 			}
+			completeGridRefresh();
 		};
 	};
 

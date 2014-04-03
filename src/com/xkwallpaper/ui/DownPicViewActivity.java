@@ -1,3 +1,6 @@
+/**
+ * 此处为我的下载页面点击图片、锁屏后跳转的页面，仅仅用于展示已经下载好的图片
+ */
 package com.xkwallpaper.ui;
 
 import java.io.File;

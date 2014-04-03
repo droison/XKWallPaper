@@ -1,3 +1,6 @@
+/**
+ * 找回密码页面
+ */
 package com.xkwallpaper.ui;
 
 import com.xkwallpaper.baidumtj.BaiduMTJActivity;

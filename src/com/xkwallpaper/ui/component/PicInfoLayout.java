@@ -1,3 +1,6 @@
+/**
+ * 该组件未使用
+ */
 package com.xkwallpaper.ui.component;
 
 import com.xkwallpaper.ui.R;

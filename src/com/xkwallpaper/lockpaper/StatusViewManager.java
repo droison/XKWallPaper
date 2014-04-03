@@ -21,7 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 
 //该类主要用来管理在锁屏界面上显示时间(包括12小时制下显示上午和下午)和日期。
-public class StatusViewManager implements MediaControl {
+public class StatusViewManager {
 
 	private final static String M12 = "h:mm";
 	private final static String M24 = "kk:mm";
@@ -138,7 +138,6 @@ public class StatusViewManager implements MediaControl {
 		mFormat = M24;
 	}
 
-	@Override
 	public void registerComponent() {
 		// TODO Auto-generated method stub
 		Log.d("MainActivity", "registerComponent()");
@@ -160,7 +159,6 @@ public class StatusViewManager implements MediaControl {
 		updateTime();
 	}
 
-	@Override
 	public void unregisterComponent() {
 		// TODO Auto-generated method stub
 		Log.d("MainActivity", "unregisterComponent()");
@@ -174,7 +172,6 @@ public class StatusViewManager implements MediaControl {
 		mIntentReceiver = null;
 	}
 
-	@Override
 	public void initViews() {
 		// TODO Auto-generated method stub
 		mDateView = (TextView) findViewById(R.id.date);

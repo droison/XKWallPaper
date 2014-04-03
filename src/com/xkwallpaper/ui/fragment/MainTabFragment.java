@@ -1,3 +1,6 @@
+/**
+ * 首页上面的四个导航选项卡
+ */
 package com.xkwallpaper.ui.fragment;
 
 import com.xkwallpaper.baidumtj.BaiduMTJFragment;

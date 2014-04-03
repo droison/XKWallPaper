@@ -1,3 +1,6 @@
+/*
+ * 视频、壁纸、锁屏详情页的底部导航条的逻辑
+ */
 package com.xkwallpaper.ui.fragment;
 
 import java.io.File;

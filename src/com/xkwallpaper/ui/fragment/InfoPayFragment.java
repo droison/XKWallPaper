@@ -1,3 +1,7 @@
+/**
+ * 视频、锁屏、壁纸详情页面支付部分的fragment
+ */
+
 package com.xkwallpaper.ui.fragment;
 
 import com.xkwallpaper.baidumtj.BaiduMTJFragment;

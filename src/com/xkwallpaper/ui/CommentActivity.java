@@ -1,3 +1,6 @@
+/**
+ * 本页面用于评论，评论和回复评论均跳转此处
+ */
 package com.xkwallpaper.ui;
 
 import com.xkwallpaper.baidumtj.BaiduMTJActivity;

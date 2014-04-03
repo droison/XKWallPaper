@@ -1,15 +1,11 @@
+/**
+ * 在选择本APP为默认桌面后跳转的页面，用于遍历当前除星酷外的所有桌面应用，并要求用户选择其中的默认应用
+ */
 package com.xkwallpaper.ui;
 
 import java.util.List;
 
 import com.xkwallpaper.baidumtj.BaiduMTJActivity;
-import com.xkwallpaper.constants.AppConstants;
-import com.xkwallpaper.http.PostData;
-import com.xkwallpaper.http.base.Comment;
-import com.xkwallpaper.http.base.CommentResult;
-import com.xkwallpaper.http.base.PostCommentBase;
-import com.xkwallpaper.thread.ThreadExecutor;
-import com.xkwallpaper.util.DialogUtil;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -18,19 +14,14 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ChooseHomeActivity extends BaiduMTJActivity {
 

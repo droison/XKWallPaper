@@ -1,3 +1,7 @@
+/***
+ * 关于界面的fragment
+ * 
+ */
 package com.xkwallpaper.ui.fragment;
 
 import com.xkwallpaper.baidumtj.BaiduMTJFragment;

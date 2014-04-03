@@ -1,3 +1,6 @@
+/**
+ * 视频、锁屏、壁纸页面评论部分的fragment
+ */
 package com.xkwallpaper.ui.fragment;
 
 import com.xkwallpaper.constants.AppConstants;

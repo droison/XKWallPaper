@@ -6,6 +6,7 @@ public class AppConstants {
 
 	public static final int fragmentAbout = 0X1001;
 	
+	//软件下载文件保存的SD卡目录
 	public static final String APP_FILE_NAME = "xingku";
 	public static final String APP_FILE_PATH = Environment.getExternalStorageDirectory() + "/" + APP_FILE_NAME;
 	public static final String TEMP_HEAD_FILE_PATH = Environment.getExternalStorageDirectory() + "/" + APP_FILE_NAME + "/head.jpg";
@@ -35,7 +36,7 @@ public class AppConstants {
 	 * URL
 	 */
 	public interface HTTPURL{
-		public static final String checkVersion = "http://code.taobao.org/svn/versioncontrol/trunk/xkversion";
+		public static final String checkVersion = "";
 		
 		public static final String serverIP = "http://115.28.229.188";
 		

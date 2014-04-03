@@ -1,3 +1,6 @@
+/**
+ * 此页面是默认进入搜索页面的fragment，包含热门标签和历史搜索
+ */
 package com.xkwallpaper.ui.fragment;
 
 import java.util.List;

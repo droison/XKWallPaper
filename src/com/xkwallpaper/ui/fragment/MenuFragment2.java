@@ -1,3 +1,6 @@
+/**
+ * 左边侧滑栏的fragment
+ */
 package com.xkwallpaper.ui.fragment;
 
 import com.xkwallpaper.baidumtj.BaiduMTJFragment;

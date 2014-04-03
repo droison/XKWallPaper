@@ -1,3 +1,6 @@
+/**
+ * 主页头部标题的fragment
+ */
 package com.xkwallpaper.ui.fragment;
 
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;

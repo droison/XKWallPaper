@@ -1,3 +1,6 @@
+/**
+ * 登录页面
+ */
 package com.xkwallpaper.ui;
 
 import java.util.HashMap;
@@ -27,7 +30,6 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class LoginActivity extends BaiduMTJActivity implements OnClickListener {
 

@@ -1,3 +1,6 @@
+/**
+ * 搜索fragment，其中嵌套两个子fragment（SearchDefaultFragment SearchResultFragment）
+ */
 package com.xkwallpaper.ui.fragment;
 
 import com.xkwallpaper.baidumtj.BaiduMTJFragment;

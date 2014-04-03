@@ -1,3 +1,6 @@
+/**
+ * 我的页面fragment，其中或嵌套三个子fragment
+ */
 package com.xkwallpaper.ui.fragment;
 
 import com.xkwallpaper.baidumtj.BaiduMTJFragment;

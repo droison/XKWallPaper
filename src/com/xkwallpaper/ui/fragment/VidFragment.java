@@ -1,3 +1,6 @@
+/**
+ * 此fragment未使用
+ */
 package com.xkwallpaper.ui.fragment;
 
 import com.xkwallpaper.baidumtj.BaiduMTJFragment;

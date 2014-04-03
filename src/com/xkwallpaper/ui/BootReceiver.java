@@ -1,3 +1,6 @@
+/**
+ * 监听开机启动的Receiver
+ */
 package com.xkwallpaper.ui;
 
 import com.xkwallpaper.lockpaper.LockService;

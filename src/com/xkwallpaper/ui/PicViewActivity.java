@@ -1,3 +1,6 @@
+/**
+ * 壁纸、锁屏的预览页面
+ */
 package com.xkwallpaper.ui;
 
 import cn.sharesdk.framework.ShareSDK;
